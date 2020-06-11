@@ -171,11 +171,11 @@ if(isset($_POST['submit_minutes'])){
     $result = mysqli_query($conn,$sql);
     while($row = mysqli_fetch_array($result)){
         $recipient = $row['flat_owner1_email'];
-        require '../mail.php';
+        // require '../mail.php';
     }
 
-    echo $dat;
-    $filename='../meeting_minutes/'.$meeting_id.'.txt';
+    // echo $dat;
+    $filename='../CSVs/meeting_minutes/'.$meeting_id.'.txt';
     $file=fopen($filename,'w');
     fwrite($file,$minutes);
     fclose($file);
@@ -185,7 +185,7 @@ if(isset($_POST['submit_minutes'])){
 
 if(isset($_POST['id'])){
     $id=$_POST['id'];
-    $filename='../meeting_attendance/'.$_POST['id'].'.csv';
+    $filename='../CSVs/meeting_attendance/'.$_POST['id'].'.csv';
     $file=fopen($filename,'w');
     $headers=array('id','meeting_id','flat_no','member_name','role');
     fputcsv($file,$headers);

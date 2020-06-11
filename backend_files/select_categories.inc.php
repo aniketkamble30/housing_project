@@ -96,9 +96,13 @@ if(isset($_POST['all'])){
 									<select class='form-control ' onchange='changecategory(".$p.")' id='sel_".$p."'>
 										<option value='null'>Choose..</option>
 										<option value='AMC'>AMC</option>
-										<option value='PettyCash'>Petty Cash</option>
-										<option value='InfraStructure'>InfraStructure</option>
-										<option value='MaintAndRepair'>Maintenance & Repairs</option>
+										<option value='Salary'>Salary</option>
+										<option value='Electricity_Bill'>Electricity Bill</option>
+										<option value='CIDCO_Water_Bill'>CIDCO Water Bill</option>
+										<option value='Water_Tanker'>Water Tanker</option>
+										<option value='Petty_Cash'>Petty Cash</option>
+										<option value='Maintenance_And_Repair'>Maintenance & Repairs</option>
+										<option value='Infrastructure_Development'>InfraStructure Development</option>
 										<option value='Miscellaneous'>Miscellaneous</option>
 									</select>
 								</div>
@@ -106,16 +110,20 @@ if(isset($_POST['all'])){
 								<div class='row' id='amc_sub_row_".$p."' style='display:none;'>
 									<label for='amc_cat_".$p."'  class='h5'>Select Sub-Category</label>
 									<select class='form-control' id='amc_cat_".$p."'>
-									<option selected value=''>Choose AMC type</option>";
-									$cateresult = mysqli_query($conn,"SELECT * FROM `categories`");
-									while($cati = mysqli_fetch_array($cateresult)){
-										$tab.='<option value="'.$cati['category_name'].'" >'.$cati['category_name'].'</option>';
-									}
+										<option selected value=''>Choose AMC type</option>";
+										$cateresult = mysqli_query($conn,"SELECT * FROM `categories`");
+										while($cati = mysqli_fetch_array($cateresult)){
+											$tab.='<option value="'.$cati['category_name'].'" >'.$cati['category_name'].'</option>';
+										}
 									$tab.="</select>
 								</div>
 								<div class='row' id='misc_sub_row_".$p."' style='display:none;'>
 									<label for='misc_description_".$p."' class='h5'>Add Description for Miscellaneous Expense</label>
 									<input val='' id='misc_description_".$p."' type='text' class='form-control'>
+								</div>
+								<div class='row' id='salary_sub_row_".$p."' style='display:none;'>
+									<label for='salary_description_".$p."' class='h5'>Add Description for Salary Expense</label>
+									<input val='' id='salary_description_".$p."' type='text' class='form-control'>
 								</div>
 								<div class='row' id='infra_sub_row_".$p."' style='display:none;'>
 									<label for='infra_description_".$p."' class='h5'>Add Description for Infrastructure Expense</label>

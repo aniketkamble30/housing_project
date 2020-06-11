@@ -21,34 +21,34 @@
        <form id='employee_form' >
           <div class="form-row">
             <div class="form-group col-md-6">
-              <label for="inputEmail4">Employee id</label>
-              <input type="text" name='emp_id' class="form-control" id="inputEmail4">
+              <label for="">Employee id</label>
+              <input type="text" name='emp_id' class="form-control" id="" required> 
             </div>
             <div class="form-group col-md-6">
-              <label for="inputEmail4">Employee name</label>
-              <input type="text" class="form-control" name='emp_name' id="inputEmail4">
+              <label for="">Employee name</label>
+              <input type="text" class="form-control" name='emp_name' id="" pattern="[a-zA-Z\s.]{3,40}"oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid name')">
               </div>
             </div>
     <div class="form-row">
       <div class="form-group col-md-4">
-      <label for="inputEmail4">Role of employee</label>
-              <input type="text" name='emp_type' class="form-control" id="inputEmail4">
+      <label for="">Role of employee</label>
+              <input type="text" name='emp_type' class="form-control" id="" required>
               </div>
 
       <div class="form-group col-md-4">
         <label for="inputZip">Agency name </label>
-        <input type="text" class="form-control" id="agency" placeholder=" " name='agency'>
+        <input type="text" class="form-control" id="agency" placeholder=" " name='agency' required>
       </div>
 
     <div class="form-group col-md-4">
       <label for="inputZip">Contact number</label>
-      <input type="text" class="form-control" id="emp_mob" placeholder=" " name='emp_mob'>
+      <input type="text" class="form-control" id="emp_mob" placeholder=" " name='emp_mob' required pattern="[+]\d{2}[0-9]{10}|[0-9]{10,12}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity (validity.valid ? '' :'invalid contact')" >
     </div>
   </div>
 
 
 <hr>
-    <div class="text-danger"><h6>Photo size should be less than 2MB and in jpg,jpeg,png extension</h6></div>
+    <div class="text-danger"><h6></h6></div>
     <div class="form-row">
     <div class="form-group col-md-4">
       <label >employee's image</label>
@@ -78,12 +78,12 @@
 
   <div class="form-row">
     <div class="form-group col-md-4">
-        <label for="inputEmail4">Salary per month:</label>
-        <input type="text" class="form-control" id="emp_salary" placeholder="Amount" name='emp_salary'>
+        <label for="">Salary per month:</label>
+        <input type="text" class="form-control" id="emp_salary" placeholder="Amount" name='emp_salary' pattern="[0-9,]{0,20}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid ')" >
       </div>
       <div class="form-group col-md-4">
-          <label for="inputEmail4">Yearly Increment:</label>
-          <input type="text" class="form-control" id="emp_yearly_incr" placeholder="Amount" name='emp_yearly_incr'> 
+          <label for="">Yearly Increment:</label>
+          <input type="text" class="form-control" id="emp_yearly_incr" placeholder="Amount" name='emp_yearly_incr'pattern="[0-9,]{0,20}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid')" > 
         </div>
   </div>
 
@@ -101,18 +101,21 @@
     </div>
 </div>
 
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<?php  include './footer.html';?>
    <!-- Menu Toggle Script -->
    <script>
-     $("#menu-toggle").click(function(e) {
-       e.preventDefault();
-       $("#wrapper").toggleClass("toggled");
-     });
-     $('.container-fluid').click(function() {
-   $('#wrapper').removeClass("toggled");
-});
+
+var delay = 0;
+var offset = 150;
+
+document.addEventListener('invalid', function(e){
+   $(e.target).addClass("invalid");
+   $('html, body').animate({scrollTop: $($(".invalid")[0]).offset().top - offset }, delay);
+}, true);
+document.addEventListener('change', function(e){
+   $(e.target).removeClass("invalid")
+}, true);
+
      $('#employee_form').on('submit',function(e){
       e.preventDefault();
 
@@ -149,14 +152,17 @@
         cache:false,
         data: formData,
         success: function(data){
+        
           var response=JSON.parse(data);
           if(response.success){
             $('.success-text').text(response.success);
             $('.success').show();
+            $('html, body').animate({scrollTop: $($('.success')[0]).offset().top - offset }, delay);
           }
           else{
             $('.error-text').text(response.error);
             $('.error').show();
+            $('html, body').animate({scrollTop: $($('.error')[0]).offset().top - offset }, delay);
           }
           $('#employee_form').trigger('reset');
         }
@@ -172,4 +178,3 @@
    </script>
 
 
-<?php  include './footer.html';?>

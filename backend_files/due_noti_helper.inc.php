@@ -50,7 +50,7 @@
                 <br>
                 <h5 class="m-1 text-primary">Maintenance Details</h5> 
                 <table class="table table-bordered table-hover" style="background-color:rgba(129,129,129,0.1);width:100%">
-                <tr><td width="70%">Flat Dimensions : </td><td> '.$riw['flat_dimensions'].'Sq.ft.</td></tr>                                                    
+                <tr><td width="70%">Flat Dimensions : </td><td> '.$flat_dimensions.'Sq.ft.</td></tr>                                                    
                 <tr><td width="70%">Maintenance Per Month : </td><td>₹ '.($maintenancepm).'</td></tr>
                 <tr><td width="70%">Maintenance Per Sq.Ft per Month:</td><td>'.$maintpersqft.'</td></tr>
                 </table> ';
@@ -112,36 +112,55 @@
                                 <label>Amount</label>
                                 <input type="number" disabled name="amount" id="vachi0" step="0.01" class="form-control"  >
                             </div>';
+
                                 $due_noti.='<div class="form-group col-12 col-lg-4">                            
                                     <label for="modeofpayment">Mode Of Payment</label>
-                                    <select  class="custom-select mainttype" onchange="modechange()" id="modeofpayment" name="modeofpayment">
-                                        <option value="">Select</option>
+                                    <select  class="custom-select mainttype" onchange="modechange()" id="modeofpayment" name="modeofpayment">';
+                                    if(isset($isresident)){
+                                        $due_noti.='<option value="online">Online Transfer</option>';
+                                    }
+                                    else{
+                                        $due_noti.='<option value="">Select</option>
                                         <option value="cheque">Cheque</option>
-                                        <option value="cash">Cash</option>
-                                    </select>
+                                        <option value="cash">Cash</option>';
+                                    }
+                                    $due_noti.='</select>
                                 </div>
                             </div>
                             <hr>';
-                            $due_noti.='
+                            
+                    if(isset($isresident)){
+                        $due_noti.='<div class="row" id="onlinebox">
+                            <div class="form-group col-12 col-lg-4">
+                                <label>Transaction Id</label>
+                                <input type="number" name="transaction_id" id="transaction_id" class="form-control"  >
+                            </div>
+        
+                            <div class="form-group col-12 col-lg-4">
+                                <label>Transaction Date</label>
+                                <input type="date" name="transaction_date" id="transaction_date" class="form-control"  >
+                            </div>
+                        </div>';
+                    }
+                    else{
 
-                   <div class="row" id="chequebox" style="display:none;">
-                   <div class="form-group col-12 col-lg-4">
-                   <label>Cheque number</label>
-                   <input type="number" name="chequeno" id="chequeno" class="form-control"  >
-                   </div>
-
-                   <div class="form-group col-12 col-lg-4">
-                   <label>Cheque Date</label>
-                   <input type="date" name="cheque_date" id="cheque_date" class="form-control"  >
-                   </div>
-
-                   <div class="form-group col-12 col-lg-4">
-                   <label>Bank Name</label>
-                   <input type="text" name="bank_name" id="bank_name" class="form-control"  >
-                   </div>
-                   </div>
-                <div><button class="btn btn-success btn-lg" onclick="pay()">Submit</button></div>';
-            
-            $due_noti.="
-            </div>";
+                        $due_noti.='<div class="row" id="chequebox" style="display:none;">
+                         <div class="form-group col-12 col-lg-4">
+                         <label>Cheque number</label>
+                         <input type="number" name="chequeno" id="chequeno" class="form-control"  >
+                         </div>
+     
+                         <div class="form-group col-12 col-lg-4">
+                         <label>Cheque Date</label>
+                         <input type="date" name="cheque_date" id="cheque_date" class="form-control"  >
+                         </div>
+     
+                         <div class="form-group col-12 col-lg-4">
+                         <label>Bank Name</label>
+                         <input type="text" name="bank_name" id="bank_name" class="form-control"  >
+                         </div>
+                         </div>';
+                    }
+                    $due_noti.='<div><button class="btn btn-success btn-lg" onclick="pay()">Submit</button></div>
+                    </div>';
 ?>

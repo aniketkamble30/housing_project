@@ -42,6 +42,7 @@
         <option value="ft">Flat Tenant</option>
         <option value="em">Employees</option>
         <option value="sow">Shop Owners</option>
+        <option value="st">Shop Tenant</option>
         <option value="com">Committee</option>
       </select>
     </div>
@@ -157,7 +158,7 @@
           
           <?php
             $seperator=",";
-            $file_name='history/employee.csv';
+            $file_name='../CSVs/history/employee.csv';
             $file=fopen($file_name,'r');
             $size=filesize($file_name);
             $row=fgetcsv($file,$size,$seperator);
@@ -264,7 +265,7 @@
           
           <?php 
               $seperator=",";
-              $file_name='../CSVs/history/flat_tenant.csv';
+              $file_name='history/flat_tenant.csv';
               $file=fopen($file_name,'r');
               $size=filesize($file_name);
               $row=fgetcsv($file,$size,$seperator);
@@ -405,6 +406,72 @@
 
     </div>
 </div>
+
+
+
+<div class="modal " id="shoptenantmodal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header bg-secondary">
+        <h4 class="modal-title text-light" id="view_shoptenant_no"></h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+          
+          <?php 
+              $seperator=",";
+              $file_name='../CSVs/history/shop_tenant.csv';
+              $file=fopen($file_name,'r');
+              $size=filesize($file_name);
+              $row=fgetcsv($file,$size,$seperator);
+            $r=0;
+            echo'
+            <div class="row pb-5">
+            <div class="col-3">
+              <img width="150px" onclick="shomod(0)" height="150px" id="stt34">
+            </div>
+            <div class="col-3">
+                <form action="printshoptenantrecord.php" method="post">
+                <input type="hidden" name="strownum" value="" class="strownumtoprint">
+                <button type="submit" class="btn btn-block btn-outline-info mt-3">Print</button>
+                </form>
+            </div>
+          </div>
+            ';
+            for($i=0;$i<8;$i++){
+              echo'<div class="row ">';
+                  echo'<div class="col-6">
+                  <b>'.$row[$r].':</b><div class="d-inline p-1" id="st'.$i.'"></div>                
+                </div>'; 
+                $r++;
+              echo'</div><hr>';
+            }
+          ?>
+      </div>
+            
+      <!-- Modal footer -->
+      <div class="modal-footer bg-secondary">
+      <button class="btn btn-info ">Print</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
 <?php  include './footer.html';?>
 <script type="text/javascript"
     src="https://cdn.datatables.net/v/bs4/dt-1.10.18/af-2.3.3/b-1.5.6/b-html5-1.5.6/r-2.2.2/datatables.min.js"></script>
@@ -580,4 +647,34 @@ function otherdoc(pp){
      $('.container-fluid').click(function() {
    $('#wrapper').removeClass("toggled");
 });
+
+function shoptenantdetails(strownum,sttypo){
+      $('#shoptenantmodal').modal('show')
+      $.ajax({
+        type: 'POST',
+        url:'../backend_files/history.inc.php',
+        data: {strownum:strownum,
+              sttypo:sttypo },
+        success:function(data,status){
+      $('.strownumtoprint').val(strownum);
+      console.log(data);
+          var kk=JSON.parse(data);
+          console.log($('.strownumtoprint').val());
+        $('#view_shoptenant_no').text(kk[0]);
+        var m=0;
+        for (var i = 0; i < 8; i++) {
+            var id ='#st'+i;
+            if(m == 5){var path = "../DB_docs_images/shop_tenant/"+kk[0]+"/"+kk[m];}
+            if(m == 5){ $('#stt34').attr("src", path); $('#imagemodal0').attr("src", path);}
+            else{
+            $(id).text(kk[m]);
+            }
+            m++;
+          }
+      $('#shoptenantmodal').modal('show');
+        }
+      });
+    }
+
+
   </script>

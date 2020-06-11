@@ -3,9 +3,9 @@ $conn = mysqli_connect( 'localhost','root',"",'house' );
 if(isset($_POST['submit_details'])){
     $emp_id= $_POST['emp_id'];
     $response = array();
-    $sql="SELECT emp_id FROM society_employee WHERE emp_id='$emp_id'";
-   $result=mysqli_query($conn,$sql);
-    if(mysqli_num_rows($result)==0){
+//     $sql="SELECT emp_id FROM society_employee WHERE emp_id='$emp_id'";
+//    $result=mysqli_query($conn,$sql);
+//     if(mysqli_num_rows($result)==0){
 
 
         $image1 = $_FILES['image1']['tmp_name'];
@@ -36,14 +36,14 @@ if(isset($_POST['submit_details'])){
               $dest1 = '../DB_docs_images/employee/emp_image/'.$filename1;
               if(move_uploaded_file($image1,$dest1)){
 
-                if(in_array(strtolower($ext2),array("pdf","doc","docx","html","txt")) &&($size2<=100000000))
+                if(in_array(strtolower($ext2),array("pdf","doc","docx")) &&($size2<=100000000))
                 {
                       $filename2 = 'empprf-'.$d.'-'.$emp_id.'.'.$ext2;
                       $dest2 = '../DB_docs_images/employee/id_proof/'.$filename2;
                     if( move_uploaded_file($File2,$dest2)){
 
                         if($File3!=""){
-                            if(in_array(strtolower($ext3),array("pdf","doc","docx","html","txt")) &&($size3<=100000000))
+                            if(in_array(strtolower($ext3),array("pdf","doc","docx")) &&($size3<=100000000))
                             {
                     
                                 $filename3 = 'empO-'.$d.'-'.$emp_id.'.'.$ext3;
@@ -94,10 +94,10 @@ if(isset($_POST['submit_details'])){
         else{
             $response['error']='image type or size does not match';
         }
-    }
-    else{
-        $response['error']='Error while adding employee';
-    }
+   // }
+    // else{
+    //     $response['error']='Error while adding employee';
+    // }
     echo json_encode($response);
  }
 ?>

@@ -92,6 +92,7 @@
 
       <!-- Modal body -->
 		<div class="modal-body">
+    <form id="updateform">
           <div class="row">
             <div class="col">
               <mark><b>Agreement Holder Details:&nbsp;&nbsp;</b><div class="d-inline " id="name1"></div></mark><hr>
@@ -99,7 +100,7 @@
           </div>
           <div class="form-group">
             <label for="update_agreement_holder_name">Name:</label>
-            <input type="text" name="" id="update_agreement_holder_name" class="form-control" required>
+            <input type="text" name="" id="update_agreement_holder_name" pattern="[a-zA-Z\s.]{3,40}" required oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid name')" class="form-control">
           </div>
 
           <div class="form-group">
@@ -109,12 +110,12 @@
 
           <div class="form-group">
             <label for="update_agreement_holder_mobile">Contact:</label>
-            <input type="text" name="" id="update_agreement_holder_mobile" class="form-control">
+            <input type="text" name="" id="update_agreement_holder_mobile" class="form-control" pattern="[+]\d{2}[0-9]{10}|[0-9]{10,12}" required oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid contact')">
           </div>
 
           <div class="form-group">
             <label for="update_agreement_holder_dob">Date Of Birth:</label>
-            <input type="text" name="" id="update_agreement_holder_dob" class="form-control">
+            <input type="date" name="" id="update_agreement_holder_dob" class="form-control">
           </div>
           <hr>
           <div class="form-group">
@@ -125,21 +126,64 @@
 
       <!-- Modal footer -->
       <div class="modal-footer">
-      	<button type="button" class="btn btn-danger" data-dismiss="modal" onclick="updateuserdetail()">Update</button>
+      	<button type="submit" class="btn btn-danger" onclick="updateuserdetail()">Update</button>
         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 				<input type="hidden" name="" id="hidden_user_id" value="">
       </div>
-
+</form>
     </div>
   </div>
 </div>
     </div>
 </div>
 
+
+<form enctype="multipart/form-data" id="MyForm1">
+<div class="modal" id="imgmodal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title" id="view_flat_no" >Edit Tenant Photo</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          
+          <div class="modal-body">
+          <p class="text-danger text-small">*Picture should be of format jpg,jpeg,png</p>
+      <input type="hidden" value="" name="fl" id="fl">
+      <input type="hidden" name="shenga" value="shenga">
+      <div class="form-group">
+        	<label for="proof">picture:</label>
+        	<input type="file" name="File11" id="ffiillee1" class="form-control-file">
+        </div>
+        <div class="modal-footer">
+      	<input type="button" id="btnUpload" value="Submit" style="font-size:14px;" class="btn btn-outline-success" onclick="updateimg()">
+        <!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> -->
+      </div>
+</div>
+</div>
+</div>
+</form>
+   
+
+
 <?php  include './footer.html';?>
 <script type="text/javascript"
     src="https://cdn.datatables.net/v/bs4/dt-1.10.18/af-2.3.3/b-1.5.6/b-html5-1.5.6/r-2.2.2/datatables.min.js"></script>
 <script>
+
+var delay = 0;
+var offset = 150;
+
+document.addEventListener('invalid', function(e){
+   $(e.target).addClass("invalid");
+   $('html, body').animate({scrollTop: $($(".invalid")[0]).offset().top - offset }, delay);
+}, true);
+document.addEventListener('change', function(e){
+   $(e.target).removeClass("invalid")
+}, true);
+
     $(document).ready(function(){
     readRecords();
 
@@ -152,7 +196,7 @@
 				type : "post",
 				data :{ readrecord:readrecord },
 				success:function(data,status){
-                    console.log(data);
+                   // console.log(data);
 					$('.tbody').html(data);
           $('#myTable').DataTable();
 				}
@@ -195,6 +239,9 @@
 
 
     function updateuserdetail(){
+      $('#updateform').on('submit',function(e){
+        e.preventDefault()
+      
         var agreement_holder_name=$('#update_agreement_holder_name').val();
         var agreement_holder_email=$('#update_agreement_holder_email').val();
         var agreement_holder_mobile=$('#update_agreement_holder_mobile').val();
@@ -210,23 +257,27 @@
             agreement_holder_dob:agreement_holder_dob,
             move_in_date:move_in_date
         }, function(data,status){
+        //  console.log(data);
             var response=JSON.parse(data);
-            console.log(response);
+            
             if(response.success){
               $('.success-text').text(response.success);
               $('.success').show();
+              $('html, body').animate({scrollTop: $($('.success')[0]).offset().top - offset }, delay);
             }
             else{
               $('.error-text').text(response.error);
               $('.error').show();
+              $('html, body').animate({scrollTop: $($('.error')[0]).offset().top - offset }, delay);
             }
             $('#update_user_modal').modal("hide");
             readRecords();
         });
+      });
     }
     function remove(no){
      
-      $.post("../backend/includes/view_shop_tenant_details.inc.php",{
+      $.post("../backend_files/shop_tenant_edit_details.inc.php",{
 				delete_shop_no:no
 			},function(data,status){
      
@@ -235,14 +286,69 @@
         if(response.success){
           $('.success-text').text(response.success);
           $('.success').show();
+          $('html, body').animate({scrollTop: $($('.success')[0]).offset().top - offset }, delay);
         }
         else{
           $('.error-text').text(response.error);
           $('.error').show();
+          $('html, body').animate({scrollTop: $($('.error')[0]).offset().top - offset }, delay);
         }
         readRecords();
 			});
 		}
+
+    function zoomimg(fl){
+        $('#fl').val(fl);
+        $('#imgmodal').modal("show");
+      }
+      function updateimg(){
+        var df = '<?php echo $_SESSION['username']; ?>' ;
+         var shenga="shenga";
+         var flat_no='<?php echo $_SESSION['username']?>';
+        var form = $("#MyForm1");
+        var params = form.serializeArray();
+        var files1 = $("#ffiillee1")[0].files; 
+        var pop1 = $('#ffiillee1').attr("name");  
+        var formData = new FormData();
+        formData.append(pop1, files1[0]);
+
+
+    $(params).each(function (index, element) {
+        formData.append(element.name, element.value);
+    });
+    //  for (var pair of formData.entries()) {
+    //  console.log(pair[0]+ ' - ' + pair[1]);
+    // } 
+ 
+      $.ajax({
+  		url:'../backend_files/shop_tenant_edit_details.inc.php',
+  		type:'post',
+			contentType:false,
+			processData:false,
+			cache:false,
+  			data: formData,
+			success:function(data,status){
+     //   console.log(data);
+        $('#imgmodal').modal("hide");
+        var response=JSON.parse(data);
+      //  console.log(response);
+        if(response.success){
+          $('.success-text').text(response.success);
+          $('.success').show();
+          $('html, body').animate({scrollTop: $($('.success')[0]).offset().top - offset }, delay);
+        
+        }
+        else{
+          $('.error-text').text(response.error);
+          $('.error').show();
+          $('html, body').animate({scrollTop: $($('.error')[0]).offset().top - offset }, delay);
+        
+        }
+			}
+			});
+      }
+
+
     $('.success-close').click(function(){
       $('.success').hide();
     });

@@ -51,27 +51,60 @@ if(isset($_POST['get_details'])){
         $rownum = 1;
         $data.='<thead class="bg-secondary text-white">';
         $data.='<tr >';
-            for($k=0;$k<6;$k++){
+            for($k=0;$k<11;$k++){
                 $data.='<th>'.$row[$k].'</th>';
             }
-            $data.='<td>'.$row[10].'</td>';
-            $data.='<th>'.$row[12].'</th>'; 
         $data.='</tr>';
         $data.='</thead>';
         $data.='<tbody>';
         while($row=fgetcsv($file,$size,$seperator)){
             $data.='<tr  onclick="alltenantdetails(\''.$rownum.'\',\''.$_POST["type"].'\')">';
-            for($k=0;$k<6;$k++){
+            for($k=0;$k<11;$k++){
                 $data.='<td>'.$row[$k].'</td>';
             }
-            $data.='<td>'.$row[10].'</td>';
-            $data.='<td>'.$row[12].'</td>';
             $data.='</tr>';
             $rownum++;
         }
         $data.='</tbody>';
         echo $data;
     }
+
+
+
+    else if($_POST['type']=='st'){
+        $seperator=",";
+        $file_name='../CSVs/history/shop_tenant.csv';
+        $file=fopen($file_name,'r');
+        $size=filesize($file_name);
+        $row=fgetcsv($file,$size,$seperator);
+        $rownum = 1;
+        $data.='<thead class="bg-secondary text-white">';
+        $data.='<tr >';
+            for($k=0;$k<8;$k++){
+                $data.='<th>'.$row[$k].'</th>';
+            }
+        $data.='</tr>';
+        $data.='</thead>';
+        $data.='<tbody>';
+        while($row=fgetcsv($file,$size,$seperator)){
+            $data.='<tr  onclick="shoptenantdetails(\''.$rownum.'\',\''.$_POST["type"].'\')">';
+            for($k=0;$k<8;$k++){
+                $data.='<td>'.$row[$k].'</td>';
+            }
+            $data.='</tr>';
+            $rownum++;
+        }
+        $data.='</tbody>';
+        echo $data;
+    }
+
+
+
+
+
+
+
+
 
     // ------------------------------------------------------------------------------------------------------
 
@@ -318,5 +351,38 @@ if(isset($_POST['shop_no'])){
         }
 echo json_encode($response);
 }
+
+
+if(isset($_POST['strownum']) && isset($_POST['sttypo'])){
+
+    $data='';
+    if($_POST['sttypo'] =='st'){
+        $seperator=",";
+        $file_name='../CSVs/history/shop_tenant.csv';
+        
+        $searchrow=$_POST['strownum'];
+        $row = 1;
+        $mycsvfile = array(); //define the main array.
+        $response = array();
+        if (($handle = fopen("$file_name", "r")) != FALSE) {
+        while (($data = fgetcsv($handle, 1000, ",")) != FALSE) {
+            $num = count($data);
+            $row++;
+            $mycsvfile[] = $data; //add the row to the main array.
+        }
+        fclose($handle);
+        }
+        for($j=0;$j<8;$j++){
+            if(isset($mycsvfile[$strownum][$j])){
+                array_push($response,$mycsvfile[$strownum][$j]);
+                }
+            }
+        }
+echo json_encode($response);
+
+}
+
+
+
 error_reporting(E_WARNING);
 ?>

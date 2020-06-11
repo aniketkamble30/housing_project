@@ -14058,6 +14058,10 @@ a.text-primary:focus,
 .list-wrapper .remove {
   color: #c3bdbd !important;
 }
+.text-grey,
+.list-wrapper .remove {
+  color: #6c757d !important;
+}
 
 a.text-secondary:hover,
 .list-wrapper a.remove:hover,

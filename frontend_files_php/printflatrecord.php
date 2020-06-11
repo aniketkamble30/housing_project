@@ -8,8 +8,8 @@ if(isset($_POST['rownum'])){
 
 $flatno = $_POST['rownum'];
 
-  $path = (getenv('MPDF_ROOT')) ? getenv('MPDF_ROOT') : __DIR__;
-  require_once $path . '/vendor/autoload.php';
+$path = (getenv('MPDF_ROOT')) ? getenv('MPDF_ROOT') : __DIR__;
+require_once $path . '/vendor/autoload.php';
   $mpdf = new \Mpdf\Mpdf([
   	'margin_left' => 5,
   	'margin_right' => 5,
@@ -57,19 +57,19 @@ $r=0;
             $html.=' <td><img src="../DB_docs_images/flat_owner'.$mycsvfile[$flatno][0].'/'.$mycsvfile[$flatno][30].' " alt="" width="150pt" height="150pt" style="margin:20pt"></td>';
             }
             else{
-              $html.='<td><img src="css/notfound.jpg" alt="image not added" width="150pt" height="150pt" style="margin:20pt"></td>';
+              $html.='<td><img src="../assets/image/notfound.jpg" alt="image not added" width="150pt" height="150pt" style="margin:20pt"></td>';
             }  
             if($mycsvfile[$flatno][31] != ''){
             $html.=' <td><img src="../DB_docs_images/flat_owner'.$mycsvfile[$flatno][0].'/'.$mycsvfile[$flatno][31].' " alt="" width="150pt" height="150pt" style="margin:20pt"></td>';
             }
             else{
-              $html.='<td><img src="css/notfound.jpg" alt="image not added" width="150pt" height="150pt" style="margin:20pt"></td>';
+              $html.='<td><img src="../assets/image/notfound.jpg" alt="image not added" width="150pt" height="150pt" style="margin:20pt"></td>';
             }  
             if($mycsvfile[$flatno][32] != ''){
             $html.=' <td><img src="../DB_docs_images/flat_owner'.$mycsvfile[$flatno][0].'/'.$mycsvfile[$flatno][32].' " alt="" width="150pt" height="150pt" style="margin:20pt"></td>';
             }
             else{
-              $html.='<td><img src="css/notfound.jpg" alt="image not added" width="150pt" height="150pt" style="margin:20pt"></td>';
+              $html.='<td><img src="../assets/image/notfound.jpg" alt="image not added" width="150pt" height="150pt" style="margin:20pt"></td>';
             }  
     $html.='</tr>
             <tr><td style="border-bottom:1px solid lightgray;" colspan="3" height="35pt"></td></tr>

@@ -30,7 +30,7 @@
         $sql="SELECT name,type FROM meeting WHERE id='$id'";
         $result=mysqli_query($conn,$sql);
         $row=mysqli_fetch_assoc($result);
-        $attendance_file='../meeting_attendance/'.$id.'.csv';
+        $attendance_file='../CSVs/meeting_attendance/'.$id.'.csv';
         $file=fopen($attendance_file,'r');
         $size=filesize($attendance_file);
         $type=$row['type'];
@@ -75,7 +75,7 @@
             $data.='</tbody></table>';
             $response['data']=$data;
         }
-        $minutes_file='../meeting_minutes/'.$id.'.txt';
+        $minutes_file='../CSVs//meeting_minutes/'.$id.'.txt';
         $file=fopen($minutes_file,'r');
         if(filesize($minutes_file)>0){
             $txt=fread($file, filesize($minutes_file));

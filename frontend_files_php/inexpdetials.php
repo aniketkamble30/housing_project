@@ -29,7 +29,6 @@
                 <div><button class="btn btn-light btn-block text-info">PRINT Statement</button></div>
             </div>
         </div> -->
-        <h4 class="text-primary">Income Expense Statement for Financial Year 2019</h4>
         <div id="inexp"></div>
     </div>
 </div>

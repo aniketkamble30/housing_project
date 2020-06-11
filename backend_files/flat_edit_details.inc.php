@@ -1,5 +1,5 @@
 <?php
-
+ error_reporting(E_PARSE & ~E_NOTICE);
 $conn = mysqli_connect( 'localhost','root',"",'house' );
 
 //adding records

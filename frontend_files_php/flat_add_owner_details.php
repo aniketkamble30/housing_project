@@ -10,20 +10,32 @@
 </div>
 <div class="card">
     <div class="card-body">
+    <?php 
+    error_reporting(E_PARSE & ~E_NOTICE);
+    $s = $_GET['success'];
+    $e=$_GET['error'];
+    if($s==1){
+      echo '<div id="re" class="mt-3 mb-0 alert alert-success">Flat Owner added successfully<a href="" style="float:right"data-dismiss="alert" data-target="#re">&times;</a></div><br>';
+    }
+    else if ($e){
+      echo '<div id="re" class="mt-3 mb-0 alert alert-danger">'.$e.'<a href="" style="float:right;"data-dismiss="alert" data-target="#re">&times;</a></div><br>';
+     }
+   ?>
+
         <div class="row ">
             <div class="col col-xl-9 col-12 ">
                 <form action="../backend_files/add_flat_owner_details.inc.php" method="post" enctype="multipart/form-data">
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label>Flat Id:</label>
-                            <input type="text" class="form-control" name="flat_no" placeholder="Eg: A302">
+                            <input type="text" class="form-control" name="flat_no" placeholder="Eg: A302" required pattern="[A]\d{3,4}|[B]\d{3,4}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid flat format');">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label class="mr-sm-2" for="inlineFormCustomSelect">Type of Ownership</label>
                             <select required class="form-control mr-sm-2" name="flat_type_of_ownership"
-                                id='flat_type_of_ownership'>
+                                id='flat_type_of_ownership' required>
                                 <option value="">Select</option>
                                 <option value="single">Single</option>
                                 <option value="joint">Joint</option>
@@ -40,7 +52,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label>Name:</label>
-                            <input type="text" name="flat_owner1_name" class="form-control" placeholder="Name">
+                            <input type="text" name="flat_owner1_name" class="form-control" placeholder="Name" pattern="[a-zA-Z\s.]{3,40}" required oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid name')">
                         </div>
                         <div class="form-group col-md-6">
                             <label>EmailID:</label>
@@ -50,13 +62,13 @@
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label>Contact</label>
-                            <input type="tel" class="form-control" name="flat_owner1_mob" placeholder="Contact">
+                            <input type="tel" class="form-control" name="flat_owner1_mob" placeholder="Contact" pattern="[+]\d{2}[0-9]{10}|[0-9]{10,12}" required oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid contact')"  >
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-6">
                             <label>Occupation</label>
-                            <input type="text" class="form-control" name="flat_owner1_occup" placeholder="Occupation">
+                            <input type="text" class="form-control" name="flat_owner1_occup" placeholder="Occupation" required>
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-5">
                             <label>Date of birth</label>
                             <input type="date" class="form-control" name="flat_owner1_dob" placeholder="DOB">
                         </div>
@@ -70,26 +82,26 @@
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label>Name:</label>
-                                <input type="text" name="flat_owner2_name" class="form-control" placeholder="Name">
+                                <input type="text" name="flat_owner2_name" id="1" class="form-control" placeholder="Name"   pattern="[a-zA-Z\s.]{3,40}"oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid name')">
                             </div>
                             <div class="form-group col-md-6">
                                 <label>EmailID:</label>
-                                <input type="email" name="flat_owner2_email" class="form-control" placeholder="emailId">
+                                <input type="email" name="flat_owner2_email" id="2" class="form-control" placeholder="emailId">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label>Contact</label>
-                                <input type="number" class="form-control" name="flat_owner2_mob" placeholder="Contact">
+                                <input type="text" class="form-control" id="3" name="flat_owner2_mob" placeholder="Contact" pattern="[+]\d{2}[0-9]{10}|[0-9]{10,12}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid contact')" >
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-7">
                                 <label>Occupation</label>
-                                <input type="text" class="form-control" name="flat_owner2_occup"
+                                <input type="text" class="form-control" id="4" name="flat_owner2_occup"
                                     placeholder="Occupation">
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-5">
                                 <label>Date of birth</label>
-                                <input type="date" class="form-control" name="flat_owner2_dob" placeholder="DOB">
+                                <input type="date" class="form-control" id="5" name="flat_owner2_dob" placeholder="DOB">
                             </div>
                         </div>
                     </div>
@@ -126,9 +138,9 @@
                         <h4 class="ml-3">Nominee:</h4>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-6">
                             <label>Enter Nominee's name</label>
-                            <input type="text" class="form-control" name="nominee" required>
+                            <input type="text" class="form-control" name="nominee" pattern="[a-zA-Z\s.]{5,40}" required oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid name')">
                         </div>
                     </div>
 
@@ -136,53 +148,54 @@
                         <div class="form-group col-md-4">
                             <label>Number of members</label>
                             <input type="number" class="form-control" name="flat_member_count"
-                                placeholder="Number of members">
+                                placeholder="Number of members" min=0>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label>Assosciate Member's Name</label>
+                            <label>Assosciate Member's Name</label><br><br>
                             <input type="text" class="form-control" name="assosciate_member_name"
-                                placeholder="Name of member 1" required>
+                                placeholder="Name of member 1" pattern="[a-zA-Z\s.]{5,40}" required oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid name')">
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-6 mt-1">
                             <label>Assosciate Member's Relation with owner</label>
                             <input type="text" class="form-control" name="assosciate_member_reln"
-                                placeholder="Relation with owner" required>
+                                placeholder="Relation with owner" pattern="[a-zA-Z\s/]{2,40}" required oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invlaid format')">
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-6">
                             <label>Name of member 2</label>
                             <input type="text" class="form-control" name="flat_member2_name"
-                                placeholder="Name of member 2">
+                                placeholder="Name of member 2" pattern="[a-zA-Z\s.]{3,40}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invlaid name')">
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-6">
                             <label>Relation with owner</label>
                             <input type="text" class="form-control" name="flat_member2_reln"
-                                placeholder="Relation with owner">
+                                placeholder="Relation with owner" pattern="[a-zA-Z\s]{2,40}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invlaid format')"
+                                >
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-6">
                             <label>Name of member 3</label>
                             <input type="text" class="form-control" name="flat_member3_name"
-                                placeholder="Name of member 3">
+                                placeholder="Name of member 3" pattern="[a-zA-Z\s.]{3,40}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invlaid name')">
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-6">
                             <label>Relation with owner</label>
                             <input type="text" class="form-control" name="flat_member3_reln"
-                                placeholder="Relation with owner">
+                                placeholder="Relation with owner" pattern="[a-zA-Z\s]{2,40}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invlaid format')">
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-6">
                             <label>Name of member 4</label>
                             <input type="text" class="form-control" name="flat_member4_name"
-                                placeholder="Name of member 4">
+                                placeholder="Name of member 4" pattern="[a-zA-Z\s.]{5,40}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invlaid name')">
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-6">
                             <label>Relation with owner</label>
                             <input type="text" class="form-control" name="flat_member4_reln"
-                                placeholder="Relation with owner">
+                                placeholder="Relation with owner" pattern="[a-zA-Z\s]{2,40}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invlaid format')">
                         </div>
                     </div>
                     <div class="form-row">
@@ -218,7 +231,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label>Maid name</label>
-                            <input type="text" class="form-control" name="flat_maid_name" placeholder="Maid name">
+                            <input type="text" class="form-control" name="flat_maid_name" placeholder="Maid name" pattern="[a-zA-Z\s]{4,40}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invlaid name')">
                         </div>
                     </div>
                     <div class="form-group">
@@ -241,6 +254,18 @@
 </div>
 
 <?php  include './footer.html';?>   <script>
+
+var delay = 0;
+var offset = 150;
+
+document.addEventListener('invalid', function(e){
+   $(e.target).addClass("invalid");
+   $('html, body').animate({scrollTop: $($(".invalid")[0]).offset().top - offset }, delay);
+}, true);
+document.addEventListener('change', function(e){
+   $(e.target).removeClass("invalid")
+}, true);
+
       $(document).ready(function(){
         $('[data-toggle="popover"]').popover();
         $('#flat_type_of_ownership').change(function(){
@@ -248,7 +273,12 @@
             $(".owner2").show();
           }
           else{
-            $(".owner2").hide();
+             $(".owner2").hide();
+             $('#1').val('');
+             $('#2').val('');
+             $('#3').val('');
+             $('#4').val('');
+             $('#5').val('');
           }
         }).change();
       });

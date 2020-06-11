@@ -1,5 +1,6 @@
 <?php
     $conn =mysqli_connect('localhost','root','','house');// or die(mysqli_error($conn));
+
     extract($_POST);
     if(isset($_POST['shop_no'])){
         $filename1="";
@@ -27,7 +28,7 @@
                 $ext1=end($array1);
                 $d=date('Y-m-d',strtotime('today'));
 
-                              if(in_array(strtolower($ext1),array("jpg","jpeg","png","pdf")) &&($size1<=100000000))
+                              if(in_array(strtolower($ext1),array("jpg","jpeg","png")) &&($size1<=100000000))
                 {
     
                       if(!is_dir("../DB_docs_images/shop_tenant/$shop_no_n"))
@@ -68,4 +69,24 @@
         }
         echo json_encode($response);
     }
+
+if(isset($_POST['check'])){
+  //  $response=array();
+    $shop_no=$_POST['check'];
+    $shop_no_n=$shop_no.'T';
+    $query="SELECT * FROM shop_tenant_details WHERE shop_no='$shop_no_n'";
+    $result=mysqli_query($conn,$query);
+    $response = array();
+
+    if(mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                 $response = $row;
+            }
+        $response['nonedit']='not editable';
+    }
+    // else{
+    //     $response['edit']='this shop no';
+    // }
+    echo json_encode($response);
+}
 ?>

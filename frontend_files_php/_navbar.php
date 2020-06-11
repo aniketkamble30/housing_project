@@ -201,7 +201,7 @@ else{
   43% { transform: rotate(0); }
   100% { transform: rotate(0); }
 } 
-}
+
 @keyframes shadow-pulse-hidden
 {
      0% {background: rgba(255,255,255, 0.3);box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.2);}

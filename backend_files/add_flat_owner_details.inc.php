@@ -64,9 +64,7 @@ if(isset($_POST['submit_owner_details'])){
           //echo $ext[0];
           if(in_array("jpg",$ext) || 
           in_array("jpeg",$ext) ||
-            in_array("pdf",$ext) || 
-            in_array("png",$ext) || 
-            in_array("gif",$ext))
+            in_array("png",$ext))
             {     
               
 
@@ -183,17 +181,16 @@ if(isset($_POST['submit_owner_details'])){
 			// 	echo 'error';
 			// }
 
-      header('location:../frontend_files_php/add_flat_owner_details.php?success=1');
+      header('location:../frontend_files_php/flat_add_owner_details.php?success=1');
     }
     else{
-      header('location:../frontend_files_php/add_flat_owner_details.php?error=Owner for this flat already exists');
+      header('location:../frontend_files_php/flat_add_owner_details.php?error=Owner for this flat already exists');
     }
   }
   else{
     
-    header('location:../frontend_files_php/add_flat_owner_details.php?error=Flat Number does not exist in flat details');
+    header('location:../frontend_files_php/flat_add_owner_details.php?error=Flat Number does not exist in flat details');
   }
-  
 }
 
 

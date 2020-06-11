@@ -20,12 +20,12 @@ else{
 }
 </style>
 <div class="page-header">
-    <h3 class="page-title ">Add Income</h3>
+    <h3 class="page-title ">Add Categories</h3>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="admin.php">Home</a></li>
             <li class="breadcrumb-item"><a href="fintabs.php">Finance And Accounting</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Add Income</li>
+            <li class="breadcrumb-item active" aria-current="page">Add Categories</li>
         </ol>
         </nav>
 </div>
@@ -85,7 +85,7 @@ $('#done').click(function (e) {
            url: "../backend_files/select_categories.inc.php",
            data: {all:'all'},
            success: function (response) {
-               alert(response);
+            //    alert(response);
                var data = JSON.parse(response);
                $('#tablo').html(data.tab);
 
@@ -108,36 +108,78 @@ $('#done').click(function (e) {
     function changecategory(id){
         var selectedvalue = $('#sel_'+id).val();
         // alert(selectedvalue);
-        if(selectedvalue == 'AMC')          
-                {   $('#amc_sub_row_'+id).show();    
-                    $('#misc_sub_row_'+id).hide();    
-                    $('#infra_sub_row_'+id).hide();    
-                    $('#maintrep_sub_row_'+id).hide();    
-                }
-        if(selectedvalue == 'Miscellaneous')
-                {   $('#amc_sub_row_'+id).hide();    
-                    $('#misc_sub_row_'+id).show();    
-                    $('#infra_sub_row_'+id).hide();    
-                    $('#maintrep_sub_row_'+id).hide();    
-                }
-        if(selectedvalue == 'InfraStructure')
-                {   $('#amc_sub_row_'+id).hide();    
-                    $('#misc_sub_row_'+id).hide();    
-                    $('#infra_sub_row_'+id).show();    
-                    $('#maintrep_sub_row_'+id).hide();    
-                }
-        if(selectedvalue == 'MaintAndRepair')    
-                {   $('#amc_sub_row_'+id).hide();    
-                    $('#misc_sub_row_'+id).hide();    
-                    $('#infra_sub_row_'+id).hide();    
-                    $('#maintrep_sub_row_'+id).show();    
-                }
-        if(selectedvalue == 'PettyCash')    
-                {   $('#amc_sub_row_'+id).hide();    
-                    $('#misc_sub_row_'+id).hide();    
-                    $('#infra_sub_row_'+id).hide();    
-                    $('#maintrep_sub_row_'+id).hide();    
-                }
+
+        if(selectedvalue == 'AMC'){
+            $('#amc_sub_row_'+id).show();    
+            $('#misc_sub_row_'+id).hide();
+            $('#infra_sub_row_'+id).hide();
+            $('#maintrep_sub_row_'+id).hide();
+            $('#salary_sub_row_'+id).hide();
+        }
+        if(selectedvalue == 'Salary'){
+            
+            $('#amc_sub_row_'+id).hide();    
+            $('#misc_sub_row_'+id).hide();
+            $('#infra_sub_row_'+id).hide();
+            $('#maintrep_sub_row_'+id).hide();
+            $('#salary_sub_row_'+id).show();
+        }
+        if(selectedvalue == 'Maintenance_And_Repair'){
+            
+            $('#amc_sub_row_'+id).hide();    
+            $('#misc_sub_row_'+id).hide();
+            $('#infra_sub_row_'+id).hide();
+            $('#maintrep_sub_row_'+id).show();
+            $('#salary_sub_row_'+id).hide();
+        }
+        if(selectedvalue == 'Infrastructure_Development'){
+            
+            $('#amc_sub_row_'+id).hide();    
+            $('#misc_sub_row_'+id).hide();
+            $('#infra_sub_row_'+id).show();
+            $('#maintrep_sub_row_'+id).hide();
+            $('#salary_sub_row_'+id).hide();
+        }
+        if(selectedvalue == 'Miscellaneous'){
+            
+            $('#amc_sub_row_'+id).hide();    
+            $('#misc_sub_row_'+id).show();
+            $('#infra_sub_row_'+id).hide();
+            $('#maintrep_sub_row_'+id).hide();
+            $('#salary_sub_row_'+id).hide();
+        }
+        if(selectedvalue == 'Electricity_Bill'){
+            
+            $('#amc_sub_row_'+id).hide();    
+            $('#misc_sub_row_'+id).hide();
+            $('#infra_sub_row_'+id).hide();
+            $('#maintrep_sub_row_'+id).hide();
+            $('#salary_sub_row_'+id).hide();            
+        }
+        if(selectedvalue == 'CIDCO_Water_Bill'){
+            
+            $('#amc_sub_row_'+id).hide();    
+            $('#misc_sub_row_'+id).hide();
+            $('#infra_sub_row_'+id).hide();
+            $('#maintrep_sub_row_'+id).hide();
+            $('#salary_sub_row_'+id).hide();            
+        }
+        if(selectedvalue == 'Water_Tanker'){
+            
+            $('#amc_sub_row_'+id).hide();    
+            $('#misc_sub_row_'+id).hide();
+            $('#infra_sub_row_'+id).hide();
+            $('#maintrep_sub_row_'+id).hide();
+            $('#salary_sub_row_'+id).hide();            
+        }
+        if(selectedvalue == 'Petty_Cash'){
+            
+            $('#amc_sub_row_'+id).hide();    
+            $('#misc_sub_row_'+id).hide();
+            $('#infra_sub_row_'+id).hide();
+            $('#maintrep_sub_row_'+id).hide();
+            $('#salary_sub_row_'+id).hide();            
+        }
     }
     function save(){
         var j=0;
@@ -180,7 +222,7 @@ $('#done').click(function (e) {
                 }else{
                         $('#misc_description_'+i).css('border','1px solid lightgrey');                        
                 }
-                if($('#sel_'+i).val() == 'InfraStructure' && (($('#infra_description_'+i).val()).trim().length == 0)) {
+                if($('#sel_'+i).val() == 'Infrastructure_Development' && (($('#infra_description_'+i).val()).trim().length == 0)) {
                     $('#infra_description_'+i).css('border','2px solid red');
                         infrafine = false;
                         if(flag == 0){
@@ -190,7 +232,17 @@ $('#done').click(function (e) {
                 }else{
                         $('#infra_description_'+i).css('border','1px solid lightgrey');                        
                 }
-                if($('#sel_'+i).val() == 'MaintAndRepair' && (($('#maintandrep_description_'+i).val()).trim().length == 0)) {
+                if($('#sel_'+i).val() == 'Salary' && (($('#salary_description_'+i).val()).trim().length == 0)) {
+                    $('#salary_description_'+i).css('border','2px solid red');
+                        maintfine = false;
+                        if(flag == 0){
+                            gotoid = '#sel_'+i;
+                            flag=1;
+                        }
+                }else{
+                        $('#maintandrep_description_'+i).css('border','1px solid lightgrey');                        
+                    }
+                if($('#sel_'+i).val() == 'Maintenance_And_Repair' && (($('#maintandrep_description_'+i).val()).trim().length == 0)) {
                     $('#maintandrep_description_'+i).css('border','2px solid red');
                         maintfine = false;
                         if(flag == 0){
@@ -239,16 +291,20 @@ $('#done').click(function (e) {
                     descself = $('#misc_description_'+i).val();
                     crdr = 'DR';
                 }
-                if(selectedvalue == 'InfraStructure'){
+                if(selectedvalue == 'Infrastructure_Development'){
                     descself = $('#infra_description_'+i).val();
                     crdr = 'DR';
                 }
-                if(selectedvalue == 'MaintAndRepair'){
+                if(selectedvalue == 'Maintenance_And_Repair'){
                     descself = $('#maintandrep_description_'+i).val();
                     crdr = 'DR';
                 }
-                if(selectedvalue == 'PettyCash'){
-                    descself = 'petty';
+                if(selectedvalue == 'Salary'){
+                    descself = $('#salary_description_'+i).val();
+                    crdr = 'DR';
+                }
+                if(selectedvalue == 'Electricity_Bill' || selectedvalue == 'CIDCO_Water_Bill' || selectedvalue == 'Water_Tanker' || selectedvalue == 'Petty_Cash'){
+                    descself = 'general';
                     crdr = 'DR';
                 }
                 console.log($('#desc_'+i).val()+'---'+

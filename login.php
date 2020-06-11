@@ -1,5 +1,6 @@
 <?php
 session_start();
+//He Mi kela
 $conn =new mysqli('localhost','root','','house') or die(mysqli_error($conn));
 $msg="";
 

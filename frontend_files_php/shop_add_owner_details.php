@@ -14,24 +14,25 @@
 <div class="card">
     <div class="card-body">        
         <!-- write your code here -->
-        <div class="mt-3 mb-0 alert alert-success success" style='display: none;'><span class="success-text"></span><span style="float:right; cursor: pointer;" class="success-close">&times;</span></div><br>
-  <div class="mt-3 mb-0 alert alert-danger error" style='display: none;'> <span class="error-text"></span><span style="float:right; cursor: pointer;" class="error-close">&times;</span></div><br>
+        <?php 
+        error_reporting(E_PARSE & ~E_NOTICE);
+    $s = $_GET['success'];
+    $e=$_GET['error'];
+    if($s==1){
+      echo '<div id="re" class="mt-3 mb-0 alert alert-success">Flat Owner added successfully<a href="" style="float:right"data-dismiss="alert" data-target="#re">&times;</a></div><br>';
+    }
+    else if ($e){
+      echo '<div id="re" class="mt-3 mb-0 alert alert-danger">'.$e.'<a href="" style="float:right;"data-dismiss="alert" data-target="#re">&times;</a></div><br>';
+     }
+   ?>
 
-  <div class='row text-light mt-2 bg-success' id='success' style='display: none; border: 1px solid black; padding: 1em;'>
-    <div class='ml-auto' id='success-close' style='cursor: pointer;'>&times;</div>
-    <div id='success-body' class='col-12'></div>
-  </div>
-  <div class='row text-light mt-2 bg-danger' id='error' style='display: none; border: 1px solid black; padding: 1em;'>
-    <div class='ml-auto' id='error-close' style='cursor: pointer;'>&times;</div>
-    <div id='error-body' class='col-12'></div>
-  </div>
   <div class="row ">
     <div class="col col-xl-10 col-lg-10 col-xs-10">
       <form enctype="multipart/form-data" action="../backend_files/shop_add_owner_details.inc.php" id='shop-owner-details' method="post">
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="inputEmail4"><b>Shop No:*</b></label>
-            <input type="text" name='shop_no' class="form-control" id="inputEmail4" placeholder="Eg:S1" required>
+            <input type="text" name='shop_no' class="form-control" id="inputEmail4" placeholder="Eg:S1" pattern="[S]\d{1,4}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid shop format');">
           </div>
           <div class="form-group col-md-5">
             <label for="inputEmail4">Type of Business</label><br>
@@ -49,11 +50,11 @@
           <div class="form-group col-md-6">
             <label for="inputEmail4"><b>Owner-1:*</b></label><br>
             <label for="inputEmail4">Name:</label>
-            <input type="text" class="form-control" name='name1' id="inputEmail4" placeholder="First Middle Last" required>
+            <input type="text" class="form-control" name='name1' id="inputEmail4" placeholder="First Middle Last" pattern="[a-zA-Z\s]{3,40}" required oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid name')">
             <label for="inputEmail4">Email:</label>
             <input type="email" class="form-control" name='email1' id="inputEmail4" placeholder="abc@example.com" required>
             <label for="inputEmail4">Contact no.:</label>
-            <input type="tel" class="form-control" name='phoneno1' id="inputEmail4" placeholder="10-digit mobile no." required>
+            <input type="tel" class="form-control" name='phoneno1' id="inputEmail4" placeholder="10-digit mobile no." pattern="[+]\d{2}[0-9]{10}|[0-9]{10,12}" required oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid contact')"  >
             <label for="inputEmail4">Date of Birth:</label>
             <input type="date" class="form-control" name='dob1' id="inputEmail4" required>
             <br>
@@ -63,11 +64,11 @@
           <div class="form-group col-md-6 owner2">
             <label for="inputEmail4"><b>Owner-2:</b></label><br>
             <label for="inputEmail4">Name:</label>
-            <input type="text" class="form-control" name='name2' id="inputEmail4" placeholder="First Middle Last">
+            <input type="text" class="form-control" name='name2' id="inputEmail4" placeholder="First Middle Last" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid name')">
             <label for="inputEmail4">Email:</label>
             <input type="email" class="form-control" name='email2' id="inputEmail4" placeholder="abc@example.com">
             <label for="inputEmail4">Contact no.:</label>
-            <input type="tel" class="form-control" name='phoneno2' id="inputEmail4" placeholder="10-digit mobile no.">
+            <input type="tel" class="form-control" name='phoneno2' id="inputEmail4" placeholder="10-digit mobile no." pattern="[+]\d{2}[0-9]{10}|[0-9]{10,12}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid contact')" >
             <label for="inputEmail4">Date of Birth:</label>
             <input type="date" class="form-control" name='dob2' id="inputEmail4">
             <br>
@@ -110,6 +111,18 @@
 
 <?php  include './footer.html';?>
 <script type="text/javascript">
+
+var delay = 0;
+var offset = 150;
+
+document.addEventListener('invalid', function(e){
+   $(e.target).addClass("invalid");
+   $('html, body').animate({scrollTop: $($(".invalid")[0]).offset().top - offset }, delay);
+}, true);
+document.addEventListener('change', function(e){
+   $(e.target).removeClass("invalid")
+}, true);
+
     $(document).ready(function(){ 
       $('[data-toggle="popover"]').popover();
       $('#type_of_ownership').change(function(){

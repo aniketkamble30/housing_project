@@ -37,16 +37,17 @@ if(isset($_POST['viewpoll'])){
         $nes = mysqli_query($conn,$que);  
         $rope = mysqli_fetch_assoc($nes);
         if($rope){
-            $data .="<p class='p-3 text-dark ' align='center'>No New Poll Added</p>";
+            $data .="<p class='p-3 text-dark ' align='center'>Your opinion has been recorded. Thankyou !</p>";
           }
           else{
        // $data .='<p class="m-3">'.$row['questions'].'</p>';
+       $data.='<p> your opinion</p>';
         $data .='<div class="p-3" >
                            <select required class="pollo custom-select mr-sm-2" name="purpose">
                              <option>Select</option>';
 
       if($row['option1'] != ''){
-            $data .='<option value='.$row['option1'].'>'.$row['option1'].'</option>';
+            $data .='<option value="'.$row['option1'].'">'.$row['option1'].'</option>';
           }
         if($row['option2']!=''){   
               $data .='<option value='.$row['option2'].'>'.$row['option2'].'</option>';

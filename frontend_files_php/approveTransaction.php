@@ -6,12 +6,12 @@
     visibility: hidden;
   }
 
-
+/* 
   img:hover {
     -webkit-animation: spin 4s linear infinite;
     -moz-animation: spin 4s linear infinite;
     animation: spin 4s linear infinite;
-  }
+  } */
 
 
   .tick {
@@ -36,7 +36,7 @@
     transition: width 0.5s;
     width: 100px;
   }
-
+/* 
   @-moz-keyframes spin {
     100% {
       -moz-transform: rotate(360deg);
@@ -54,7 +54,7 @@
       -webkit-transform: rotate(360deg);
       transform: rotate(360deg);
     }
-  }
+  } */
 
 
 
@@ -68,10 +68,23 @@
     float: right;
   } */
 </style>
+<div class="page-header">
+    <h3 class="page-title ">Approve Intimations </h3>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="admin.php">Home</a></li>
+            <li class="breadcrumb-item "><a href="fintabs.php">Finance And Accounting</a></li>
+            <li class="breadcrumb-item ">Approve Intimations</li>
+        </ol>
+    </nav>
+</div>
 <div class="card" >
   <div class="card-body">
     <div class="tbod table-responsive p-1">
-      <h3>Loading Please wait</h3>
+      <center>
+        <h3>Loading Please wait</h3>
+        <img src="../assets/image/preloader.gif" width="200px" alt="">
+      </center>
     </div>
   </div>
 </div>

@@ -15,7 +15,7 @@ if(isset($_POST['seesaw'])){
       <form>
       <p class="m-3">'.$row['question'].'</p>
       <input type="hidden" name="flat_no" id="flat" value="'.$_SESSION['username'].' ">
-  	  <textarea class="form-control" id="comment" placeholder="Your Suggestion Here....." ></textarea>
+  	  <textarea class="form-control p-3" id="comment" placeholder="Your Suggestion Here....." ></textarea>
      <center> <button type="button" style="width:135px;" onclick="postt()" class="btn btn-info m-2">Post</button></center>
       </form>';
 }

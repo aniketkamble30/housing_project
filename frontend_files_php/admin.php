@@ -32,6 +32,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h3>NEW UI</h3>
+                            <h6>Hello world</h6>
                         </div>
                     </div>
                    <?php

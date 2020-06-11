@@ -2,13 +2,14 @@
 $conn =new mysqli('localhost','root','','house') or die(mysqli_error($conn));
 extract($_POST);
 $response=array();
-if(isset($_POST['submit_owner_details'])){
+if(isset($_POST['submit_details'])){
   
   if(isset($_POST['shop_no']))
   {$shop_no = $_POST['shop_no'];}
   $sql="SELECT shop_no FROM shop_details WHERE shop_no='$shop_no'";
   $result=mysqli_query($conn, $sql);
   if(mysqli_num_rows($result)==0){
+    header('location:../frontend_files_php/shop_add_owner_details.php?error=shop does not exits in shop details');
     $response['error']='Shop No does not exist';
     echo json_encode($response);
   }
@@ -16,6 +17,7 @@ if(isset($_POST['submit_owner_details'])){
     $sql="SELECT shop_no FROM shop_owner_details WHERE shop_no='$shop_no'";
     $result=mysqli_query($conn, $sql);
     if(mysqli_num_rows($result)>0){
+      header('location:../frontend_files_php/shop_add_owner_details.php?error=Owner for this shop already exists');
       $response['error']='Owner with the Shop no is already added';
       echo json_encode($response);
     }
@@ -73,10 +75,8 @@ if(isset($_POST['submit_owner_details'])){
       $d=date('Y-m-d',strtotime('today'));
     
       if(in_array("jpg",$ext) || 
-      in_array("jpeg",$ext) ||
-        in_array("pdf",$ext) || 
-        in_array("png",$ext) || 
-        in_array("gif",$ext)){ 
+      in_array("jpeg",$ext) || 
+        in_array("png",$ext)){ 
 
             if(!is_dir("../DB_docs_images/shop_owner/$shop_no"))
             {
@@ -120,11 +120,11 @@ if(isset($_POST['submit_owner_details'])){
       mkdir('../DB_docs_images/forms/'.$shop_no);
       $response['success']='Owner added successfully';
       echo json_encode($response);
-      header('location:../frontend_files_php/shop_add_owner_details.php');
+      header('location:../frontend_files_php/shop_add_owner_details.php?success=1');
     }
   }
 
 }
 
-header('location:../frontend_files_php/shop_add_owner_details.php')
+header('location:../frontend_files_php/shop_add_owner_details.php?error=error while adding details');
 ?>

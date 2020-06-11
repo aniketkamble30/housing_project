@@ -35,9 +35,9 @@ $html .= '
       <td>Owner 2:</td>
     </tr>
     <tr>';
-    $row['image1'] != NULL ? $html .='<td><img style="border:1px solid black;width:200px;height:150px;margin:20px" src="../DB_docs_images/shop_owner/'.$row['flat_no'].'/'.$row['image1'].'"/></td>' 
+    $row['image1'] != NULL ? $html .='<td><img style="border:1px solid black;width:200px;height:150px;margin:20px" src="../DB_docs_images/shop_owner/'.$row['shop_no'].'/'.$row['image1'].'"/></td>' 
     : $html.='<td width="30%">No Image Added</td>';
-    $row['image2'] != NULL ? $html .='<td><img style="border:1px solid black;width:200px;height:150px;margin:20px" src="../DB_docs_images/shop_owner/'.$row['flat_no'].'/'.$row['image2'].'"/></td>' 
+    $row['image2'] != NULL ? $html .='<td><img style="border:1px solid black;width:200px;height:150px;margin:20px" src="../DB_docs_images/shop_owner/'.$row['shop_no'].'/'.$row['image2'].'"/></td>' 
     : $html.='<td width="30%">No Image Added</td>';
     // <td><img  style="border:1px solid black;width:250px;height:250px;margin:20px" src="../DB_docs_images/shop_owner/'.$row['shop_no'].'/'.$row['image1'].'" ></td>
     // <td><img  style="border:1px solid black;width:250px;height:250px;margin:20px" src="../DB_docs_images/shop_owner/'.$row['shop_no'].'/'.$row['image2'].'" ></td>

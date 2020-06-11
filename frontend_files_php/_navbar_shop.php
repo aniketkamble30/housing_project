@@ -1,8 +1,8 @@
 <?php
-session_start();
+// session_start();
 $conn = mysqli_connect('localhost','root','','house');
 if(!isset($_SESSION['username']) || $_SESSION['role']!="shop"){
-header("location:../login.php");
+    header("location:../index.php");
 }
 
  ?>
@@ -251,7 +251,7 @@ $indate = $result['indate'];
                     </li>
                     
                     <li class="nav-item">
-                        <a class="nav-link" href="meetings_view.php">
+                        <a class="nav-link" href="view_meeting.php">
                             <span class="menu-title">Meetings</span>
                             <i class="las la-handshake menu-icon"></i>
                         </a>
@@ -267,21 +267,21 @@ $indate = $result['indate'];
 
                         <div class="collapse" id="meeting">
                             <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">Payment Intimations</a></li>
-                                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">My Transactions</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="user_payment.php">Add Payment Intimation</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="">My Transactions</a></li>
                             </ul>
                         </div>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="shop_tenant_doc.php">
+                        <a class="nav-link" href="form_tenant.php">
                             <span class="menu-title">Tenant Documents</span>
                             <i class="las la-file-pdf menu-icon"></i>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="shop_doc.php">
+                        <a class="nav-link" href="form_user.php">
                             <span class="menu-title">Documents</span>
                             <i class="las la-file-invoice menu-icon"></i>
                         </a>

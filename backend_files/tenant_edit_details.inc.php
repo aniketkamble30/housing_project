@@ -35,8 +35,11 @@ if(isset($_POST['readrecord'])){
                     </button>
                     <div class="dropdown-menu bg-light border-dark">
                     <div class="">  
-                    <button onclick="getdetails(\''.$row['flat_no'].'\')" class="btn btn-block btn-light text-info " >Edit</button>
+                    <button onclick="getdetails(\''.$row['flat_no'].'\')" class="btn btn-block btn-light text-info " >Edit details</button>
 				</div> 
+				<div class="">                        
+				<button onclick="zoomimg(\''.$row['flat_no'].'\')" class="btn btn-light btn-block text-dark">Edit Photos</button>
+			</div>
                         <div class="">                                
                         <button onclick="remove(\''.$row['flat_no'].'\')" class="btn btn-block btn-light text-dark " >Remove</button>
                         </div>
@@ -94,6 +97,7 @@ if(isset($_POST['hidden_user_idupd'])){
     $agreement_holder_mobile=$_POST['agreement_holder_mobile'];
     $agreement_holder_dob=$_POST['agreement_holder_dob'];
 	$tenant_move_in_date=$_POST['tenant_move_in_date'];	
+	$update_member_count=$_POST['update_member_count'];	
 	$member1=$_POST['member1'];
 	$member2=$_POST['member2'];
 	$member3=$_POST['member3'];
@@ -106,6 +110,7 @@ if(isset($_POST['hidden_user_idupd'])){
      agreement_holder_mobile='$agreement_holder_mobile',
      agreement_holder_dob='$agreement_holder_dob',
      tenant_move_in_date='$tenant_move_in_date',
+	 tenant_count_of_members='$update_member_count',
 	 member1='$member1',
 	 member2='$member2',
 	 member3='$member3',
@@ -129,7 +134,7 @@ if(isset($_POST['hidden_user_idupd'])){
 if(isset($_POST['delete_flat_no']))
 {
 	$flat_no=$_POST['delete_flat_no'];
-	$sql = "SELECT `flat_no`,`agreement_holder_name`, `agreement_holder_mobile`, `agreement_holder_email`, `agreement_holder_dob`, `tenant_count_of_members`, `member1`, `member2`, `member3`, `member4`, `tenant_move_in_date`, `image` FROM tenant_details WHERE flat_no='$flat_no'";
+	$sql = "SELECT `flat_no`, `tenant_count_of_members`, `member1`, `member2`, `member3`, `member4`, `agreement_holder_name`, `agreement_holder_mobile`, `agreement_holder_email`, `agreement_holder_dob`, `tenant_move_in_date`, `image` FROM tenant_details WHERE flat_no='$flat_no'";
 	$result=mysqli_query($conn,$sql);
 	$row=mysqli_fetch_assoc($result);
 	array_push($row,date('Y-m-d',strtotime('today')));
@@ -145,7 +150,7 @@ if(isset($_POST['delete_flat_no']))
 			$uquery = "UPDATE flat_details SET flat_status='self-use' WHERE flat_no='$flat_no_p'";
 			if(mysqli_query($conn,$uquery)){
 				$dquery = "DELETE FROM login WHERE username='$flat_no'";
-				if(mysqli_query($conn,$dquery)){
+				if(mysqli_query($conn,$uquery)){
 					$response['success']='Tenant removed successfully';
 				}
 				else{
@@ -166,5 +171,58 @@ if(isset($_POST['delete_flat_no']))
 	}
 	echo json_encode($response);
 }
+
+
+if(isset($_POST['shenga'])){
+$flat_no =$_POST['fl']; 
+$response = array();
+//    $sql="SELECT owner1_image1,owner2_image1,spouse_image1 FROM flat_owner_details WHERE flat_no='$flat_no'";
+//  $result=mysqli_query($conn, $sql);
+if(!empty($_FILES['File11']['tmp_name'])){
+$image1 = $_FILES['File11']['tmp_name'];
+$size1 = $_FILES['File11']['size'];
+$arr1=explode('.',$_FILES['File11']['name']);
+$ext=end($arr1);
+if(in_array(strtolower($ext),array("jpg","jpeg","png"))){
+// array_push($ext,end($array1));
+$d=rand();
+if(!is_dir("../DB_docs_images/flat_tenant/$flat_no")){
+				  mkdir("../DB_docs_images/flat_tenant/$flat_no");
+				}
+				$filename1 = 'owner1-'.$d.'.'.$ext ;
+				$dest1 = '../DB_docs_images/flat_tenant/'.$flat_no.'/'.$filename1;   
+				if(move_uploaded_file($image1,$dest1)){
+				  $tyty="SELECT flat_no FROM tenant_details WHERE flat_no='$flat_no'";
+				  $ryry=mysqli_query($conn,$tyty);
+					if(mysqli_num_rows($ryry)>0){
+						  $qq="UPDATE tenant_details SET `image`='$filename1' WHERE flat_no='$flat_no' ";
+						  if(mysqli_query($conn,$qq))
+							$response['success']='Updated photos successfully';
+					}
+				// 	else if(mysqli_num_rows($ryry)==0){
+				// 		  $qq="INSERT INTO flat_owner_details (flat_no,owner1_image1) VALUES ('$flat_no','$filename1')";
+				// 			if(mysqli_query($conn,$qq))
+				// 		   // echo 'hey';
+				// 			  $response['success']='Updated photos successfully';
+				//   }
+					else
+						$response['error']='error while updating photo';
+				}
+				  
+				}
+				}
+			// 	$query = " SELECT `owner1_image1`,`owner2_image1`,`spouse_image1` FROM flat_owner_details WHERE flat_no = '$flat_no'";
+			// 	if (!$result = mysqli_query($conn,$query)) {
+			// 		exit(mysqli_error());
+			// 	}
+			// 	if(mysqli_num_rows($result) > 0) {
+			// 	  while ($row = mysqli_fetch_assoc($result)) {
+			// 		  $response = $row;
+			// 	  }
+			// 	  $response['success']='Updated photos successfully';
+			//   }
+				echo json_encode($response);
+}
+
 
 ?>

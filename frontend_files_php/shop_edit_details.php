@@ -146,6 +146,7 @@
 
       <!-- Modal body -->
 			<div class="modal-body">
+      <form id="updateform">
           <div class="row">
             <div class="col">
               <mark><b>Owner 1 :&nbsp;&nbsp;</b><div class="d-inline " id="name1"></div></mark><hr>
@@ -153,26 +154,26 @@
           </div>
           <div class="form-group">
             <label for="update_name1"> Owner Name:</label>
-            <input type="text" name="" id="update_name1" class="form-control">
+            <input type="text" name="" id="update_name1" class="form-control" attern="[a-zA-Z\s.]{3,40}" required oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid name')">
           </div>
 
           <div class="form-group">
             <label for="update_email1">Owner Email:</label>
-            <input type="text" name="" id="update_email1" class="form-control">
+            <input type="email" name="" id="update_email1" class="form-control" required>
           </div>
 
           <div class="form-group">
             <label for="update_phoneno1">Owner Phone No:</label>
-            <input type="text" name="" id="update_phoneno1" class="form-control">
+            <input type="text" name="" id="update_phoneno1" class="form-control" pattern="[+]\d{2}[0-9]{10}|[0-9]{10,12}" required oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid contact')" >
           </div>
 
           <div class="form-group">
             <label for="update_dob1">Owner Date Of Birth:</label>
-            <input type="text" name="" id="update_dob1" class="form-control">
+            <input type="date" name="" id="update_dob1" class="form-control" required>
           </div>
           <div class="form-group">
             <label for="update_type_of_ownership">Update Ownership Type:</label>
-            <select class="custom-select mr-sm-2" name='type_of_ownership' id="update_type_of_ownership">
+            <select class="custom-select mr-sm-2" name='type_of_ownership' id="update_type_of_ownership" required>
                    <option value="">Select</option>
                   <option value="single">Single</option>
                  <option value="joint">Joint</option>
@@ -187,17 +188,17 @@
             </div>
             <div class="form-group">
               <label for="update_name2"> Owner Name:</label>
-              <input type="text" name="" id="update_name2" class="form-control">
+              <input type="text" name="" id="update_name2" class="form-control" pattern="[a-zA-Z\s.]{3,40}"oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid name')">
             </div>
 
             <div class="form-group">
               <label for="update_email2">Owner Email:</label>
-              <input type="text" name="" id="update_email2" class="form-control">
+              <input type="email" name="" id="update_email2" class="form-control">
             </div>
 
             <div class="form-group">
               <label for="update_phoneno2">Owner Phone No:</label>
-              <input type="text" name="" id="update_phoneno2" class="form-control">
+              <input type="text" name="" id="update_phoneno2" class="form-control"  pattern="[+]\d{2}[0-9]{10}|[0-9]{10,12}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid contact')" >
             </div>
 
             <div class="form-group">
@@ -220,14 +221,15 @@
             <label for="updadte_business_type">Update Business Type :</label>
             <input type="text" name="" id="update_business_type" class="form-control">
           </div>
-  
+          <input type="hidden" name="" id="hidden_user_id" value="">
 
       <!-- Modal footer -->
       <div class="modal-footer">
-      	<button type="button" class="btn btn-danger" data-dismiss="modal" onclick="updateuserdetail()">Update</button>
+      	<button type="submit" class="btn btn-danger" onclick="updateuserdetail()">Update</button>
         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-				<input type="hidden" name="" id="hidden_user_id" value="">
+				
       </div>
+      </form>
 
     </div>
   </div>
@@ -276,6 +278,18 @@
     src="https://cdn.datatables.net/v/bs4/dt-1.10.18/af-2.3.3/b-1.5.6/b-html5-1.5.6/r-2.2.2/datatables.min.js"></script>
 
 <script>
+
+var delay = 0;
+var offset = 150;
+
+document.addEventListener('invalid', function(e){
+   $(e.target).addClass("invalid");
+   $('html, body').animate({scrollTop: $($(".invalid")[0]).offset().top - offset }, delay);
+}, true);
+document.addEventListener('change', function(e){
+   $(e.target).removeClass("invalid")
+}, true);
+
  $(document).ready(function(){
     $('#update_type_of_ownership').change(function(){
           if($('#update_type_of_ownership').val()=='joint'){
@@ -283,6 +297,10 @@
           }
           else{
             $(".owner2").hide();
+            $('#update_name2').val('');
+            $('#update_email2').val('');
+            $('#update_phoneno2').val('');
+            $('#update_dob2').val('');
           }
         }).change();
     readRecords();
@@ -362,11 +380,16 @@
         $('#update_email2').val(dekhle.email2);
         $('#update_phoneno2').val(dekhle.phoneno2);
         $('#update_dob2').val(dekhle.dob2);
+        $('#update_type_of_ownership').val(dekhle.type_of_ownership);
         if(dekhle.type_of_ownership=='joint'){
           $('.owner2').show();
         }
         else{
           $('.owner2').hide();
+          $('#update_name2').val('');
+          $('#update_email2').val('');
+          $('#update_phoneno2').val('');
+          $('#update_dob2').val('');
         }
 			});
 			$('#update_user_modal').modal("show");
@@ -378,20 +401,25 @@
 				delete_shop_no:no
 			},function(data,status){
         var response=JSON.parse(data);
-       
+
         if(response.success){
           $('.success-text').text(response.success);
           $('.success').show();
+          $('html, body').animate({scrollTop: $($('.success')[0]).offset().top - offset }, delay);
         }
         else{
           $('.error-text').text(response.error);
           $('.error').show();
+          $('html, body').animate({scrollTop: $($('.error')[0]).offset().top - offset }, delay);
         }
         readRecords();
 			});
 		}}
 
     function updateuserdetail(){
+      $('#updateform').on('submit',function(e){
+        e.preventDefault();
+      
       var shop_status=$('#update_shop_status').val();
       var shop_dimensions=$('#update_shop_dimensions').val();
       var type_of_ownership=$('#update_type_of_ownership').val();
@@ -426,13 +454,16 @@
         if(response.success){
           $('.success-text').text(response.success);
           $('.success').show();
+          $('html, body').animate({scrollTop: $($('.success')[0]).offset().top - offset }, delay);
         }
         else{
           $('.error-text').text(response.error);
           $('.error').show();
+          $('html, body').animate({scrollTop: $($('.error')[0]).offset().top - offset }, delay);
         }
         readRecords();
       });
+    });
 
     }
 
@@ -478,10 +509,12 @@
         if(response.success){
           $('.success-text').text(response.success);
           $('.success').show();
+          $('html, body').animate({scrollTop: $($('.success')[0]).offset().top - offset }, delay);
         }
         else{
           $('.error-text').text(response.error);
           $('.error').show();
+          $('html, body').animate({scrollTop: $($('.error')[0]).offset().top - offset }, delay);
         }
 			}
 			});

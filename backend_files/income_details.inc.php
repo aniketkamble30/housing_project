@@ -63,7 +63,7 @@ if (isset($_POST['allexp'])) {
     while ($thatsit = mysqli_fetch_array($newquery)) {
         $data .= '
         <tr>
-            <td>' . $thatsit['month'] .'-'.$thatsit['year'] . '</td>
+            <td>' . $thatsit['year'] .'-'.$thatsit['month'] . '</td>
             <td>' . $thatsit['type'] . '</td>
             <td>' . $thatsit['subtype_or_desc'] . '</td>
             <td>' . $thatsit['amount'] . '</td>
@@ -144,7 +144,7 @@ if (isset($_POST['specexp'])) {
     while ($thatsit = mysqli_fetch_array($newquery)) {
         $data .= '
         <tr>
-        <td>' . $thatsit['month'] .'-'. $thatsit['year'] .'</td>
+        <td>' . $thatsit['year'] .'-'. $thatsit['month'] .'</td>
             <td>' . $subtype . '</td>
             <td>' . $thatsit['amount'] . '</td>
         </tr>';

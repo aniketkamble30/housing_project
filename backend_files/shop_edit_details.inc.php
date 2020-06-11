@@ -15,16 +15,13 @@ if(isset($_POST['readrecord'])){
 
  if(mysqli_num_rows($result) > 0){
 
-	$data.='<table class="table table-bordered table-striped table-responsive" id="shoptable">
-	<thead class="bg-secondary text-white">
+	$data.='<table class="table table-bordered table-hover bg-light" id="myTable">
+	<thead>
 			<tr>
 				<th>Shop No.</th>
 				<th >Owner Name</th>
-				<th >status</th>
-				<th>Edit</th>
-				<th>Edit photos</th>
-				<th>Delete</th>
-				<th>Print</th>
+				<th>status</th>
+				<th>Options</th>
 			</tr>
 		</thead>
 	<tbody>';
@@ -34,23 +31,31 @@ if(isset($_POST['readrecord'])){
 
 			 <td class="njo"><button type="button" onclick="viewdetails(\''.$row['shop_no'].'\')" class="btn
         btn-block text-primary">'.$row['shop_no'].'</button></td>
-			 <td class="njo">'.$row['name1'].'</td>
-			 <td class="njo" >'.$row['shop_status'].'</td>
-			 <td class="njo">
-				 <button onclick="getdetails(\''.$row['shop_no'].'\')" class="btn btn-block btn-outline-dark" style="border-radius:10px;">Edit</button>
-			 </td>
+			 <td>'.$row['name1'].'</td>
+			 <td>'.$row['shop_status'].'</td>
 			 <td>
-			 <button onclick="zoomimg(\''.$row['shop_no'].'\')" class="btn btn-block btn-outline-secondary" style="border-radius:10px;">Edit Photos</button>
-		 </td>
-			 <td>
-				<button onclick="remove(\''.$row['shop_no'].'\')" class="btn btn-block btn-outline-danger" style="border-radius:10px;">Remove</button>
-			</td>
-			<td>
+			 <div class="btn-group dropleft">
+			 <button type="button" class="btn btn-outline-primary " data-toggle="dropdown">
+			 <i class="las la-ellipsis-v"></i>Options
+			 </button>
+			 <div class="dropdown-menu bg-light border-dark">
+			 <div class="">   
+				 <button onclick="getdetails(\''.$row['shop_no'].'\')" class="btn btn-light btn-block text-dark" >Edit details</button>
+				 </div>
+			 <div class="">			 <button onclick="zoomimg(\''.$row['shop_no'].'\')" class="btn btn-light btn-block text-dark"">Edit Photos</button>
+			 </div>
+			<div class="">
+				<button onclick="remove(\''.$row['shop_no'].'\')" class="btn btn-light btn-block text-dark">Remove</button>
+			</div>
+			<div class="">
 			<form action="printshop.php" method="post">
 				 <input type="hidden" value="'.$row['shop_no'].'" name="id">
-				 <button type="submit" class="btn btn-block  btn-outline-success" style="border-radius:10px;">Print</button>
+				 <button type="submit" class="btn btn-light btn-block text-dark">Print</button>
 				 </form>
-		</td>
+			</div>
+			</div>
+			</div>
+	 </td>
 			 </tr>';
 	 }
 	 $data.='</tbody></table>';
@@ -158,7 +163,7 @@ if(isset($_POST['delete_shop_no']))
 		$result=mysqli_query($conn,$sql);
 		$row=mysqli_fetch_assoc($result);
 		array_push($row,date('Y-m-d',strtotime('today')));
-		$filename='../DB_docs_images/history/shop_owner.csv';
+		$filename='../CSVs/history/shop_owner.csv';
 		$file=fopen($filename,'a');
 		fputcsv($file,$row);
 		fclose($file);

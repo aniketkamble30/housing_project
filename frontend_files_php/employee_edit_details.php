@@ -36,8 +36,8 @@ display: none;
 <div class="card">
     <div class="card-body">        
         <!-- write your code here -->
-        <div id="re" class="mt-3 mb-0 alert alert-success success" style='display: none;'><span class="success-text"></span><span style="float:right; cursor: pointer;" class="success-close">&times;</span></div>
-  <div id="re" class="mt-3 mb-0 alert alert-danger error" style='display: none;'> <span class="error-text"></span><span style="float:right; cursor: pointer;" class="error-close">&times;</span></div>  
+        <div id="re" class="mt-3 mb-0 alert alert-success success" style='display: none;'><span class="success-text"></span><span style="float:right; cursor: pointer;" class="success-close">&times;</span></div><br>
+  <div id="re" class="mt-3 mb-0 alert alert-danger error" style='display: none;'> <span class="error-text"></span><span style="float:right; cursor: pointer;" class="error-close">&times;</span></div>  <br>
         <div class="container-fluid">
   
 	<div class="tbody"></div>
@@ -121,27 +121,27 @@ display: none;
 			<div class="modal-body">
         <div class="form-group">
         	<label for="update_flat_no">Update Employee ID</label>
-        	<input type="text" name="" id="update_employee_id" class="form-control">
+        	<input type="text" name="" id="update_employee_id" class="form-control" required>
         </div>
         <div class="form-group">
         	<label for="update_flat_no">Update Employee Name</label>
-        	<input type="text" name="" id="update_employee_name" class="form-control">
+        	<input type="text" name="" id="update_employee_name" class="form-control" required pattern="[a-zA-Z\s.]{3,40}"oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid name')">
         </div>
         <div class="form-group">
         	<label for="update_flat_no">Update Employee Agency</label>
-        	<input type="text" name="" id="update_employee_agency" class="form-control">
+        	<input type="text" name="" id="update_employee_agency" class="form-control" required>
         </div>
         <div class="form-group">
         	<label for="update_flat_no">Update Employee Mobile</label>
-        	<input type="text" name="" id="update_employee_mobile" class="form-control">
+        	<input type="text" name="" id="update_employee_mobile" class="form-control"  required pattern="[+]\d{2}[0-9]{10}|[0-9]{10,12}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity (validity.valid ? '' :'invalid contact')" >
         </div>
         <div class="form-group">
         	<label for="update_flat_no">Update Employee Salary</label>
-        	<input type="text" name="" id="update_employee_salary" class="form-control">
+        	<input type="text" name="" id="update_employee_salary" class="form-control" pattern="[0-9,]{0,20}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid ')">
         </div>
         <div class="form-group">
         	<label for="update_flat_no">Update Employee Yearly Increment</label>
-        	<input type="text" name="" id="update_employee_yearly_incr" class="form-control">
+        	<input type="text" name="" id="update_employee_yearly_incr" class="form-control" pattern="[0-9,]{0,20}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid ')">
         </div>        
       </div>
 
@@ -207,24 +207,20 @@ display: none;
 
     </div>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/af-2.3.3/b-1.5.6/b-html5-1.5.6/r-2.2.2/datatables.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js"></script>
+<?php  include './footer.html';?>
 
 <script type="text/javascript">
-$("#menu-toggle").click(function(e) {
-       e.preventDefault();
-       $("#wrapper").toggleClass("toggled");
-     });
-     $('.container-fluid').click(function() {
-   $('#wrapper').removeClass("toggled");
-});
+var delay = 0;
+var offset = 150;
+
+document.addEventListener('invalid', function(e){
+   $(e.target).addClass("invalid");
+   $('html, body').animate({scrollTop: $($(".invalid")[0]).offset().top - offset }, delay);
+}, true);
+document.addEventListener('change', function(e){
+   $(e.target).removeClass("invalid")
+}, true);
+
   $(document).ready(function(){
     readRecords();
 
@@ -274,7 +270,7 @@ function otherdoc(pp){
       $.post("../backend_files/employee_edit_details.inc.php",{
         id:id
       },function(data,status){
-          console.log(data);
+          // console.log(data);
         var dekhle = JSON.parse(data);
         $('#emp_id').text(dekhle.emp_id);
         $('#emp_name').text(dekhle.emp_name);
@@ -291,11 +287,10 @@ function otherdoc(pp){
     }
     function remove(id){
       var conf = confirm("Do you want to delete ?");
-      if(conf==true){
         $.post("../backend_files/employee_edit_details.inc.php",{
           delete_employee:id
         },function(data,status){
-          console.log(data);
+          // console.log(data);
           var response=JSON.parse(data);
           if(response.success){
             $('.success-text').text(response.success);
@@ -307,7 +302,6 @@ function otherdoc(pp){
           }
           readRecords();
         });
-      }
 		}
 
 		function getdetails(id){
@@ -315,6 +309,7 @@ function otherdoc(pp){
 			$.post("../backend_files/employee_edit_details.inc.php",{
 				id:id
 			},function(data,status){
+        // console.log(data);
 				var user = JSON.parse(data);
         $('#update_employee_id').val(user.emp_id);
         $('#update_employee_name').val(user.emp_name);
@@ -345,14 +340,17 @@ function otherdoc(pp){
         emp_salary : emp_salary,
         emp_yearly_incr: emp_yearly_incr
       }, function(data,status){
+        // console.log(data);
         var response=JSON.parse(data);
         if(response.success){
           $('.success-text').text(response.success);
           $('.success').show();
+           $('html, body').animate({scrollTop: $($('.success')[0]).offset().top - offset }, delay);
         }
         else{
           $('.error-text').text(response.error);
           $('.error').show();
+          $('html, body').animate({scrollTop: $($('.error')[0]).offset().top - offset }, delay);
         }
         $('#update_user_modal').modal("hide");
         readRecords();
@@ -367,4 +365,3 @@ function otherdoc(pp){
 
   </script>
 
-<?php  include './footer.html';?>

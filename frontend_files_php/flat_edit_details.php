@@ -12,7 +12,7 @@
           </div>
           <div class="card">
             <div class="card-body">  
-            <div id="re" class="mt-3 mb-0 alert alert-success success" style='display: none;'><span class="success-text"></span><span style="float:right; cursor: pointer;" class="success-close">&times;</span></div>
+            <div id="re" class="mt-3 mb-0 alert alert-success success" style='display: none;'><span class="success-text"></span><span style="float:right; cursor: pointer;" class="success-close">&times;</span></div><br>
   <div id="re" class="mt-3 mb-0 alert alert-danger error" style='display: none;'> <span class="error-text"></span><span style="float:right; cursor: pointer;" class="error-close">&times;</span></div>
   <br>
   
@@ -94,7 +94,7 @@
             </div>
           </div>
 
-          <div class='owner2'>
+          <div class='owner2' id='owner2'>
             <div class="row">
               <div class="col">
                 <mark><b>Owner 2 :&nbsp;&nbsp;</b><div class="d-inline "></div></mark><hr>
@@ -284,6 +284,7 @@
 
       <!-- Modal body -->
 			<div class="modal-body">
+      <form id="UpdateForm">
           <input type="hidden" id='flat_no' value=''>
           <div class="row">
             <div class="col">
@@ -292,24 +293,35 @@
           </div>
           <div class="form-group">
             <label for="update_owner1_name"> Update Owner 1 Name:</label>
-            <input type="text" name="" id="update_owner1_name" class="form-control" placeholder="Last Name">
+            <input type="text" name="" id="update_owner1_name" class="form-control" placeholder="" id='agreement_holder_name' pattern="[a-zA-Z\s.]{5,40}" required oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid name')">
           </div>
           <div class="form-group">
             <label for="update_owner1_email"> Update Owner 1 Email:</label>
-            <input type="text" name="" id="update_owner1_email" class="form-control" placeholder="Last Name">
+            <input type="email" name="" id="update_owner1_email" class="form-control" placeholder="" required>
           </div>
           <div class="form-group">
             <label for="update_owner1_phoneno"> Update Owner 1 Phone no:</label>
-            <input type="text" name="" id="update_owner1_phoneno" class="form-control" placeholder="Last Name">
+            <input type="text" name="" id="update_owner1_phoneno" class="form-control" placeholder="" pattern="[+]\d{2}[0-9]{10}|[0-9]{10,12}" required oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid contact')" >
           </div>
           <div class="form-group">
             <label for="update_owner1_occup"> Update Owner 1 Occupation:</label>
-            <input type="text" name="" id="update_owner1_occup" class="form-control" placeholder="Last Name">
+            <input type="text" name="" id="update_owner1_occup" class="form-control" placeholder="">
           </div>
           <div class="form-group">
             <label for="update_owner1_dob"> Update Owner 1 Birth Date:</label>
-            <input type="text" name="" id="update_owner1_dob" class="form-control" placeholder="Last Name">
+            <input type="date" name="" id="update_owner1_dob" class="form-control" placeholder="">
           </div>
+
+          <div class="form-group">
+            <label for="update_flat_type_of_ownership">Update Type Of Ownership:</label>
+           <select required class="custom-select mr-sm-2" name="flat_type_of_ownership" id='update_flat_type_of_ownership' required>
+            <option value="">Select</option>
+            <option value="single">Single</option>
+            <option value="joint">Joint</option>
+          </select>
+        </div>
+
+
           <div class="owner2">
             <div class="row">
               <div class="col">
@@ -318,23 +330,23 @@
             </div>
             <div class="form-group">
               <label for="update_owner2_name"> Update Owner 2 Name:</label>
-              <input type="text" name="" id="update_owner2_name" class="form-control" placeholder="Last Name">
+              <input type="text" name="" id="update_owner2_name" class="form-control" placeholder="" pattern="[a-zA-Z\s.]{5,40}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid name')">
             </div>
             <div class="form-group">
               <label for="update_owner2_email"> Update Owner 2 Email:</label>
-              <input type="text" name="" id="update_owner2_email" class="form-control" placeholder="Last Name">
+              <input type="email" name="" id="update_owner2_email" class="form-control" placeholder="">
             </div>
             <div class="form-group">
               <label for="update_owner2_phoneno"> Update Owner 2 Phone no:</label>
-              <input type="text" name="" id="update_owner2_phoneno" class="form-control" placeholder="Last Name">
+              <input type="text" name="" pattern="[+]\d{2}[0-9]{10}|[0-9]{10,12}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid contact')"  id="update_owner2_phoneno" class="form-control" placeholder="">
             </div>
             <div class="form-group">
               <label for="update_owner2_occup"> Update Owner 2 Occupation:</label>
-              <input type="text" name="" id="update_owner2_occup" class="form-control" placeholder="Last Name">
+              <input type="text" name="" id="update_owner2_occup" class="form-control" placeholder="">
             </div>
             <div class="form-group">
               <label for="update_owner2_dob"> Update Owner 2 Birth Date:</label>
-              <input type="text" name="" id="update_owner2_dob" class="form-control" placeholder="Last Name">
+              <input type="date" name="" id="update_owner2_dob" class="form-control" placeholder="">
             </div>
           </div>
           <!-- ANIKET -->
@@ -347,52 +359,52 @@
             <!-- ANIKET -->
           <div class="form-group">
             <label for="update_nominee"> Update Nominee Name:</label>
-            <input type="text" name="" id="update_nominee" class="form-control">
+            <input type="text" name="" id="update_nominee" class="form-control" pattern="[a-zA-Z\s.]{5,40}" required oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid name')">
           </div>
           <div class="form-group">
             <label for="update_nominee"> Assosciate member's name:</label>
-            <input type="text" name="" id="update_assosciate_members_name" class="form-control">
+            <input type="text" name="" id="update_assosciate_members_name" class="form-control" pattern="[a-zA-Z\s.]{5,40}" required oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid name')">
           </div>
           <div class="form-group">
             <label for="update_nominee"> Assosciate member's relation with owner:</label>
-            <input type="text" name="" id="update_assosciate_members_reln" class="form-control">
+            <input type="text" name="" id="update_assosciate_members_reln" class="form-control" pattern="[a-zA-Z\s.]{2,40}" required oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid format')">
           </div>
           <div class="form-group">
             <label for="update_member_count"> Update Member Count:</label>
-            <input type="text" name="" id="update_member_count" class="form-control" >
+            <input type="number" name="" id="update_member_count" class="form-control" min=0 required>
           </div>
           
           <div class="form-group">
             <label for="update_member_count"> Member 2 name:</label>
-            <input type="text" name="" id="upmemname2" class="form-control" >
+            <input type="text" name="" id="upmemname2" class="form-control" pattern="[a-zA-Z\s.]{5,40}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid name')" >
           </div>
           <div class="form-group">
             <label for="update_member_count"> Member 2 relation:</label>
-            <input type="text" name="" id="upmemname2reln" class="form-control" >
+            <input type="text" name="" id="upmemname2reln" class="form-control" pattern="[a-zA-Z\s.]{2,40}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid format')">
           </div>
           <div class="form-group">
             <label for="update_member_count"> Member 3 name:</label>
-            <input type="text" name="" id="upmemname3" class="form-control" >
+            <input type="text" name="" id="upmemname3" class="form-control" pattern="[a-zA-Z\s.]{5,40}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid name') >
           </div>
           <div class="form-group">
             <label for="update_member_count"> Member 3 relation:</label>
-            <input type="text" name="" id="upmemname3reln" class="form-control" >
+            <input type="text" name="" id="upmemname3reln" class="form-control" pattern="[a-zA-Z\s.]{5,40}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid format')">
           </div>
           <div class="form-group">
             <label for="update_member_count"> Member 4 name:</label>
-            <input type="text" name="" id="upmemname4" class="form-control" >
+            <input type="text" name="" id="upmemname4" class="form-control" pattern="[a-zA-Z\s.]{5,40}"oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid name')" >
           </div>
           <div class="form-group">
             <label for="update_member_count"> Member 4 relation:</label>
-            <input type="text" name="" id="upmemname4reln" class="form-control" >
+            <input type="text" name="" id="upmemname4reln" class="form-control" pattern="[a-zA-Z\s.]{5,40}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid format')" >
           </div>
           <div class="form-group">
             <label for="update_member_count"> Member 5 name:</label>
-            <input type="text" name="" id="upmemname5" class="form-control" >
+            <input type="text" name="" id="upmemname5" class="form-control" pattern="[a-zA-Z\s.]{5,40}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid name')">
           </div>
           <div class="form-group">
             <label for="update_member_count"> Member 5 relation:</label>
-            <input type="text" name="" id="upmemname5reln" class="form-control" >
+            <input type="text" name="" id="upmemname5reln" class="form-control" pattern="[a-zA-Z\s.]{5,40}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid format')">
           </div>
           </div>
           
@@ -401,14 +413,7 @@
                 <mark><b>Other Details:&nbsp;&nbsp;</b></mark><hr>
               </div>
           </div>
-          <div class="form-group">
-            <label for="update_flat_type_of_ownership">Update Type Of Ownership:</label>
-           <select required class="custom-select mr-sm-2" name="flat_type_of_ownership" id='update_flat_type_of_ownership'>
-            <option value="">Select</option>
-            <option value="single">Single</option>
-            <option value="joint">Joint</option>
-          </select>
-        </div>
+
           <div class="form-group">
             <label for="update_flat_status">Update Status :</label>
             <select required class="custom-select mr-sm-2" name="flat_type_of_ownership" id='update_flat_status'>
@@ -419,15 +424,15 @@
           </select>
           </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="updateuserdetail()">Save</button>
+          <button type="submit" class="btn btn-danger" onclick="updateuserdetail()">Save</button>
           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
           <input type="hidden" name="" id="hidden_user_id" value="">
         </div>
+        </form>
       </div>
     </div>
   </div>
 </div>
-
 
 
 <!-- -------------soumya--------------------------------- -->
@@ -473,10 +478,37 @@
  
 <script>
   $(document).ready(function(){
-    readRecords();
+    
     // readAllRecord();
+    $('#update_flat_type_of_ownership').change(function(){
+          if($('#update_flat_type_of_ownership').val()=='joint'){
+            $(".owner2").show();
+          }
+          else{
+          $('.owner2').hide();
+          $('#update_owner2_name').val('');
+        $('#update_owner2_email').val('');
+        $('#update_owner2_phoneno').val('');
+        $('#update_owner2_occup').val('');
+        $('#update_owner2_dob').val('');
+        }
+        }).change();
+        readRecords();
   });
 
+  var delay = 0;
+var offset = 150;
+
+document.addEventListener('invalid', function(e){
+   $(e.target).addClass("invalid");
+   $('html, body').animate({scrollTop: $($(".invalid")[0]).offset().top - offset }, delay);
+}, true);
+document.addEventListener('change', function(e){
+   $(e.target).removeClass("invalid")
+}, true);
+
+
+ 
   // -------------soumya---------------------------------
       function zoomimg(fl){
         $('#fl').val(fl);
@@ -524,10 +556,14 @@
         if(response.success){
           $('.success-text').text(response.success);
           $('.success').show();
+          $('html, body').animate({scrollTop: $($('.success')[0]).offset().top - offset }, delay);
+        
         }
         else{
           $('.error-text').text(response.error);
           $('.error').show();
+          $('html, body').animate({scrollTop: $($('.error')[0]).offset().top - offset }, delay);
+        
         }
 			}
 			});
@@ -635,6 +671,8 @@
 			},function(data,status){
 				var user = JSON.parse(data);
         $('#flat_no').val(user.flat_no);
+        $('#update_flat_type_of_ownership').val(user.flat_type_of_ownership);
+        $('#update_flat_status').val(user.flat_status);
         $('#update_owner1_name').val(user.flat_owner1_name);
         $('#update_owner1_email').val(user.flat_owner1_email);
         $('#update_owner1_phoneno').val(user.flat_owner1_mob);
@@ -650,6 +688,11 @@
         }
         else{
           $('.owner2').hide();
+          $('#update_owner2_name').val('');
+        $('#update_owner2_email').val('');
+        $('#update_owner2_phoneno').val('');
+        $('#update_owner2_occup').val('');
+        $('#update_owner2_dob').val('');
         }
 
         $('#update_nominee').val(user.nominee);
@@ -686,14 +729,20 @@
         if(response.success){
           $('.success-text').text(response.success);
           $('.success').show();
+          $('html, body').animate({scrollTop: $($('.success')[0]).offset().top - offset }, delay);
+        
         }
         else if(response.due_error){
           $('.error-text').text(response.due_error);
           $('#due_error').modal("show"); 
+          $('html, body').animate({scrollTop: $($('.error')[0]).offset().top - offset }, delay);
+        
         }
         else{
           $('.error-text').text(response.error);
           $('.error').show();
+          $('html, body').animate({scrollTop: $($('.error')[0]).offset().top - offset }, delay);
+        
         }
         readRecords();
 			});
@@ -702,6 +751,8 @@
 
 
     function updateuserdetail(){
+      $('#UpdateForm').on('submit',function(e){
+       e.preventDefault();
       var hidden_user_idupd=$('#hidden_user_id').val();
       var flat_no=$('#flat_no').val();
       var flat_owner1_name=$('#update_owner1_name').val();
@@ -709,7 +760,6 @@
       var flat_owner1_mob=$('#update_owner1_phoneno').val();
       var flat_owner1_occup=$('#update_owner1_occup').val();
       var flat_owner1_dob=$('#update_owner1_dob').val();
-
       var flat_owner2_name=$('#update_owner2_name').val();
       var flat_owner2_email=$('#update_owner2_email').val();
       var flat_owner2_mob=$('#update_owner2_phoneno').val();
@@ -766,19 +816,26 @@
         flat_type_of_ownership: flat_type_of_ownership,
         // BHK: BHK
       }, function(data,status){
-        $('#update_user_modal').modal("hide");
-        readRecords();
+       // console.log(data);
         var response=JSON.parse(data);
-        console.log(response);
+        // console.log(response);
+        $('#update_user_modal').modal("hide");
+          readRecords();
         if(response.success){
           $('.success-text').text(response.success);
           $('.success').show();
+          $('html, body').animate({scrollTop: $($('.success')[0]).offset().top - offset }, delay);
+        
+
         }
         else{
           $('.error-text').text(response.error);
           $('.error').show();
+          $('html, body').animate({scrollTop: $($('.error')[0]).offset().top - offset }, delay);
+        
         }
       });
+    });
     }
     
     $('.success-close').click(function(){

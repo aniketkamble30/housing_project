@@ -3,21 +3,34 @@
     $int1=0;
     $dueyr=0;
     $finalamount=0;
-    $sql ="SELECT p.flat_dimensions,a.*,d.*
-    FROM flat_details AS p
-    INNER JOIN charges AS a
-    INNER JOIN due AS d WHERE p.flat_no = '$flat_no' AND d.flat_no = '$flat_no'";
-    $nes = mysqli_query($conn,$sql);
-    $riw = mysqli_fetch_assoc($nes);
+    if($usertype=='resident'){
 
+        $sql ="SELECT p.flat_dimensions,a.*,d.*
+        FROM flat_details AS p
+        INNER JOIN charges AS a
+        INNER JOIN due AS d WHERE p.flat_no = '$flat_no' AND d.flat_no = '$flat_no'";
+        $nes = mysqli_query($conn,$sql);
+        $riw = mysqli_fetch_assoc($nes);
+        $flat_dimensions=$riw['flat_dimensions'];
+    }
+    else if($usertype=='shop'){
+        $sql ="SELECT p.shop_dimensions,a.*,d.*
+        FROM shop_details AS p
+        INNER JOIN charges AS a
+        INNER JOIN due AS d WHERE p.shop_no = '$flat_no' AND d.flat_no = '$flat_no'";
+        $nes = mysqli_query($conn,$sql);
+        $riw = mysqli_fetch_assoc($nes);
+        $flat_dimensions=$riw['shop_dimensions'];
+    }
 
+    // echo $flat_dimensions;
     $interestrate = $riw['interest'];
     $intperday = $interestrate/36500;
     $numberofduedays = $riw['days_due'];
 
     $num = 136;
-    $sink =         ($riw['flat_dimensions']*$riw['const_cost']*(0.25))/1200;
-    $repair =       ($riw['flat_dimensions']*$riw['const_cost']*(0.75))/1200;
+    $sink =         ($flat_dimensions*$riw['const_cost']*(0.25))/1200;
+    $repair =       ($flat_dimensions*$riw['const_cost']*(0.75))/1200;
 
 
     $insurance =    ($riw['insurance']/12)/$num;
@@ -28,7 +41,7 @@
     $service =      ($riw['serv_char']/12)/$num;
     $maintenancepm =( $sink + $repair  )+ ($insurance + $water + $electricity + $lift + $security + $service);
 
-    $maintpersqft = $maintenancepm /$riw['flat_dimensions'];
+    $maintpersqft = $maintenancepm /$flat_dimensions;
     $maintperquarter = ($maintenancepm*3);
 
 

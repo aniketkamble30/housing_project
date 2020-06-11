@@ -4,7 +4,9 @@ $conn = mysqli_connect('localhost','root','','house');
 $graph = array();
 $graph2 = array();
 $graph3 = array();
-$cars = array("JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEPT","OCT","NOV","DEC");
+$valscredit = array();
+$valsdebit = array();
+$cars = array("APR","MAY","JUN","JUL","AUG","SEPT","OCT","NOV","DEC","JAN","FEB","MAR");
 $month = array();
 $monthlycredit = array();
 $monthlydebit = array();
@@ -12,22 +14,22 @@ $monthlydebit = array();
 $query  = "SELECT `type`,SUM(amount) AS sum from finance_records where crdr='DR'  group by type";
 $result = mysqli_query($conn,$query);
 while($row = mysqli_fetch_array($result)){
-    array_push($graph, array('value' => $row['type'],'sum'=>intval($row['sum'])));
+    array_push($graph, array('value' => $row['type'],'url'=>'expense_details.php?val='.$row['type'].' ','sum'=>intval($row['sum'])));
 }
 
 $query2  = "SELECT `type`,SUM(amount) AS sum1 from finance_records where crdr='CR' group by type";
 $result2 = mysqli_query($conn,$query2);
 while($row2 = mysqli_fetch_array($result2)){
-    array_push($graph2, array('value' => $row2['type'],'sum'=>intval($row2['sum1'])));
+    array_push($graph2, array('value' => $row2['type'],'url'=>'income_details.php?val='.$row['type'].' ','sum'=>intval($row2['sum1'])));
 }
 
-$query3  = " SELECT `month`,`crdr`,SUM(amount) as sum  from `finance_records` where crdr='CR'and year=".(date('Y')-1)." group by month";
+$query3  = " SELECT `month`,`crdr`,SUM(amount) as sum  from `finance_records` where crdr='CR' group by `month`";
 $result3 = mysqli_query($conn,$query3);
 while($row3 = mysqli_fetch_array($result3)){
     array_push($month,$cars[$row3['month']-1]);
     array_push($monthlycredit,intval($row3['sum']));
 }
-$query4  = " SELECT `month`,`crdr`,SUM(amount) as sum  from `finance_records` where crdr='DR'and year=".(date('Y')-1)." group by month";
+$query4  = " SELECT `month`,`crdr`,SUM(amount) as sum  from `finance_records` where crdr='DR' group by `month`";
 $result4 = mysqli_query($conn,$query4);
 while($row4 = mysqli_fetch_array($result4)){
     array_push($month,$cars[$row4['month']-1]);
@@ -60,18 +62,22 @@ chart.data = <?php echo $graph; ?>;
 var pieSeries = chart.series.push(new am4charts.PieSeries3D());
 pieSeries.dataFields.value = "sum";
 pieSeries.dataFields.category = "value";
-
 pieSeries.ticks.template.disabled = true;
 pieSeries.alignLabels = false;
 pieSeries.labels.template.text = "{value.percent.formatNumber('#.0')}%";
 pieSeries.labels.template.radius = am4core.percent(-40);
 pieSeries.labels.template.fill = am4core.color("white");
+pieSeries.slices.template.propertyFields.url = "url";
 pieSeries.slices.template.cursorOverStyle = [
     {
       "property": "cursor",
       "value": "pointer"
     }
   ];
+  
+// pieSeries.events.on("hit", function(ev) {
+//  console.log("clicked on ", ev.target.labels);
+// }, this);
 pieSeries.labels.template.adapter.add("radius", function(radius, target) {
   if (target.dataItem && (target.dataItem.values.value.percent < 10)) {
     return 0;
@@ -166,29 +172,48 @@ pieSeries.labels.template.adapter.add("fill", function(color, target) {
 <?php  include './footer.html';?>
 
 <script>
-var jsmonth = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG','SEPT','OCT','NOV','DEC'];
+var jsmonth = ['APR', 'MAY', 'JUN', 'JUL', 'AUG','SEPT','OCT','NOV','DEC','JAN', 'FEB', 'MAR'];
 var valscredit = [];
 var valsdebit = [];
 <?php 
+
 $index = 0;
-for($i =0 ;$i<12;$i++){
+for($i = 3 ;$i<12;$i++){
   if(in_array($cars[$i],$month)){
-    $index=array_search($cars[$i],$month);?>
-    valscredit.push(<?php echo $monthlycredit[$index]; ?>);
-<?php }else{?>
-      valscredit.push(0);
- <?php }
+    $index=array_search($cars[$i],$month);
+    array_push($valscredit,$monthlycredit[$index]);
+ }else{
+      array_push($valscredit,0);
+  }
 }
-?>
-<?php 
+
 $index = 0;
-for($i =0 ;$i<12;$i++){
+for($i =0 ;$i<3;$i++){
   if(in_array($cars[$i],$month)){
-    $index=array_search($cars[$i],$month);?>
-    valsdebit.push(<?php echo $monthlydebit[$index]; ?>);
-<?php }else{?>
-      valsdebit.push(0);
- <?php }
+    $index=array_search($cars[$i],$month);
+    array_push($valscredit,$monthlycredit[$index]);
+ }else{
+      array_push($valscredit,0);
+  }
+}
+$index = 0;
+for($i = 3 ;$i<12;$i++){
+  if(in_array($cars[$i],$month)){
+    $index=array_search($cars[$i],$month);
+    array_push($valsdebit,$monthlydebit[$index]);
+ }else{
+      array_push($valsdebit,0);
+  }
+}
+
+$index = 0;
+for($i =0 ;$i<3;$i++){
+  if(in_array($cars[$i],$month)){
+    $index=array_search($cars[$i],$month);
+    array_push($valsdebit,$monthlydebit[$index]);
+ }else{
+      array_push($valsdebit,0);
+  }
 }
 ?>
   if ($("#visit-sale-chart").length) {
@@ -220,7 +245,7 @@ for($i =0 ;$i<12;$i++){
             fill: true,
             borderWidth: 1,
             fill: 'origin',
-            data: valscredit,
+            data: <?php echo json_encode($valscredit); ?>,
           },
           {
             label: "Expense",
@@ -232,7 +257,7 @@ for($i =0 ;$i<12;$i++){
             fill: false,
             borderWidth: 1,
             fill: 'origin',
-            data: valsdebit,  
+            data: <?php echo json_encode($valsdebit); ?>,  
           }
         ]
       },

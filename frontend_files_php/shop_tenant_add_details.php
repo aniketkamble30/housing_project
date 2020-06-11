@@ -23,14 +23,7 @@
           <div class="form-row">
             <div class="form-group col-md-6">
               <label for="inputEmail4">Shop No:</label>
-              <?php
-            if($_SESSION['role']=="admin"){
-                echo '<input type="text" name="shop_no" class="form-control" id="shop_no" >';
-              }
-              else if($_SESSION['role']=="shop"){
-                echo '<input type="text" name="shop_no" class="form-control" value="'.$_SESSION['username'].'" id="shop_no" readonly>';
-              }  
-            ?>
+              <input type="text" name="shop_no" required class="form-control" id="shop_no" pattern="[S]\d{1,4}" oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid shop format');">
             </div>
             </div>
 
@@ -40,7 +33,7 @@
     <div class="form-row">
       <div class="form-group col-md-5">
         <label for="name"> Name </label>
-        <input type="name" class="form-control" name="name" placeholder=" ">
+        <input type="name" class="form-control" name="name" attern="[a-zA-Z\s]{3,40}" required oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid name')"placeholder=" ">
       </div>
       </div>
 
@@ -52,7 +45,7 @@
 
     <div class="form-group col-md-5">
       <label for="phoneno">Contact number</label>
-      <input type="text" class="form-control" name="phoneno" placeholder=" ">
+      <input type="text" class="form-control" name="phoneno" placeholder=" "  pattern="[+]\d{2}[0-9]{10}|[0-9]{10,12}" required oninput="setCustomValidity(''); checkValidity(); setCustomValidity(validity.valid ? '' :'invalid contact')" >
     </div>
   </div>
 
@@ -90,6 +83,19 @@
     src="https://cdn.datatables.net/v/bs4/dt-1.10.18/af-2.3.3/b-1.5.6/b-html5-1.5.6/r-2.2.2/datatables.min.js"></script>
 
 <script>
+
+var delay = 0;
+var offset = 150;
+
+document.addEventListener('invalid', function(e){
+   $(e.target).addClass("invalid");
+   $('html, body').animate({scrollTop: $($(".invalid")[0]).offset().top - offset }, delay);
+}, true);
+document.addEventListener('change', function(e){
+   $(e.target).removeClass("invalid")
+}, true);
+
+
   $('#shop_tenant_form').on('submit',function(e){
     e.preventDefault();
     var form=$("#shop_tenant_form");
@@ -104,7 +110,7 @@
       $(params).each(function (index, element) {
                 formData.append(element.name, element.value);
             });
-      console.log(formData);
+   //   console.log(formData);
   //  console.log($('#shop_tenant_form').serialize());
     $.ajax({
       url:"../backend_files/shop_tenant_add_details.inc.php",
@@ -115,16 +121,18 @@
       data: formData,
       // dataType:'json',
       success:function(data, status){
-        console.log(data);
+        // console.log(data);
         var response=JSON.parse(data);
         if(response.success){
           $('.success-text').text(response.success);
           $('.success').show();
+          $('html, body').animate({scrollTop: $($('.success')[0]).offset().top - offset }, delay);
           $('#shop_tenant_form').trigger('reset');
         }
         else{
           $('.error-text').text(response.error);
           $('.error').show();
+          $('html, body').animate({scrollTop: $($('.error')[0]).offset().top - offset }, delay);
         }
       }
     });
